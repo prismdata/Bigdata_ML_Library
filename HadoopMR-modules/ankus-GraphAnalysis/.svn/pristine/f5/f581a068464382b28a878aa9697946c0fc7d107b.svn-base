@@ -1,0 +1,64 @@
+package org.ankus.mapreduce.algorithms.utils.GraphAnalysis;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import org.ankus.util.ArgumentsConstants;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.Reducer.Context;
+
+public class GraphAnalysis_Reducer extends Reducer<Text, Text, Text, Text>
+{
+	
+	@Override
+	protected void setup(Context context) throws IOException, InterruptedException
+	{
+		Configuration conf = context.getConfiguration();
+		
+		
+	}
+	
+	protected void reduce(Text startnode, Iterable<Text> edge, Context context) 
+	{
+		double count = 0;
+		
+		
+		try
+		{
+			Iterator<Text> iterator = edge.iterator();
+			List<String> neighber = new ArrayList<String>();
+			System.out.println(iterator.toString());
+			while (iterator.hasNext())
+	        {
+				String end_node = iterator.next().toString();
+				neighber.add(end_node);
+				System.out.println(startnode.toString() +"->"+ end_node);		
+				count += 1.0;			
+	        }
+			String neighbors = neighber.toString();
+			context.write(startnode, new Text(count+"@@"+neighbors));
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.toString());
+		}
+	}
+	
+	@Override
+    protected void cleanup(Context context) throws IOException, InterruptedException
+    {
+    	System.out.println("cleanup");
+    }
+}

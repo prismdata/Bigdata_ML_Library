@@ -1,0 +1,95 @@
+{
+  "packagename":"ankus-core2-mlp-1.1.0.jar",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	"appname":"MLP", 
+	"appicon":"res/images/icon_mlp_2.png",		
+	"classname":"MultilayerPerceptron",
+	"version": "0.1",
+	"appgroup": "CLASSIFICATION",	
+	"nexus":"ankus-core2-mlp-1.1.0.jar",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"numericIndexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnselect",
+			 "name":"classIndex",
+			 "description":"Class Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"seed",
+			 "description":"Seed",
+			 "required":"Y",
+			 "values":"12",			 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"numHiddenNodes",
+			 "description":"Number Hidden Nodes",	
+			 "required":"Y",
+			 "values":"5",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"learningRate",
+			 "description":"learning Rate",	
+			 "required":"Y",
+			 "values":"0.3",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"momentum",
+			 "description":"Momentum",	
+			 "required":"Y",
+			 "values":"0.2",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"endCondition",
+			 "description":"End Condition",	
+			 "required":"Y",
+			 "values":"0",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"maxEpoch",
+			 "description":"Max Epoch",	
+			 "required":"Y",
+			 "values":"500",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"subMaxEpoch",
+			 "description":"Sub Max Epoch",	
+			 "required":"Y",
+			 "values":"1",
+			 "iotype":"I"		 
+			}	
+		]	
+	}
+  ]
+}

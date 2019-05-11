@@ -1,0 +1,79 @@
+문서가 포함하는 단어(키워드)간 문맥적 연관성을 추정하는 알고리즘
+
+수행 방법:
+입력 데이터는 개별 파일로 다룸
+각 문서는 1개의 파일로 형성되어 특정 폴더에 위치해야 함.
+
+hadoop jar ankus-core2-keyword-sim-1.1.0.jar KeyWordSimilarity \
+-input [입력 데이터 폴더 경] \
+-output [출력 데이터 폴더 경로] \
+-delimiter [문서 제목과 본문의 구분자]
+
+수행 예제:
+hadoop jar ankus-core2-keyword-sim-1.1.0.jar KeyWordSimilarity \
+-input /data/KeyWordSimilarity.txt \
+-output /result/KeyWordSimilarity \
+-delimiter \t
+
+*입력 예제:
+Entertainment	South Korea's major theaters are at loggerheads with the global streaming giant Netflix over the release of its latest production...
+Sports	South Korea will seek North Korea's participation in a continental weightlifting competition to be held this fall south of the border, ...
+LifeStyle	Summer package at Sheraton Seoul D Cube CitySheraton Seoul D Cube City Hotel is offering a summer ....
+Economy	South Korea's public sector net lending hit a record high last year, thanks to a robust gain in tax revenues ...
+
+*출력 예제:
+**/result/KeyWordSimilarity/sorted/part-r-00000 
+future,establishing, Similarity,1.0
+future,even, Similarity,1.0
+Festival,latest, Similarity,1.0
+future,eventually, Similarity,1.0
+south,Do, Similarity,1.0
+future,everything, Similarity,1.0
+future,exclude, Similarity,1.0
+future,excluding, Similarity,1.0
+future,expanding, Similarity,1.0
+south,Federation, Similarity,1.0
+future,expected, Similarity,1.0
+Seo,term, Similarity,1.0
+future,experimental, Similarity,1.0
+future,expressed, Similarity,1.0
+future,extra, Similarity,1.0
+south,Games, Similarity,1.0
+south,Gangneung, Similarity,1.0
+future,far, Similarity,1.0
+future,fast, Similarity,1.0
+future,favor, Similarity,1.0
+future,favored, Similarity,1.0
+future,fear, Similarity,1.0
+bisque,offer, Similarity,1.0
+future,fi, Similarity,1.0
+bisque,offering, Similarity,1.0
+....
+comes,by, Similarity,0.998
+by,comes, Similarity,0.998
+before,by, Similarity,0.998
+is,two, Similarity,0.998
+by,before, Similarity,0.998
+two,is, Similarity,0.998
+has,first, Similarity,0.997
+after,has, Similarity,0.997
+first,has, Similarity,0.997
+has,after, Similarity,0.997
+has,during, Similarity,0.997
+or,as, Similarity,0.997
+during,has, Similarity,0.997
+as,or, Similarity,0.997
+country,has, Similarity,0.997
+has,country, Similarity,0.997
+Korean,this, Similarity,0.995
+this,Korean, Similarity,0.995
+said,Despite, Similarity,0.994
+starting,said, Similarity,0.994
+Despite,said, Similarity,0.994
+said,her, Similarity,0.994
+said,starting, Similarity,0.994
+her,said, Similarity,0.994
+said,help, Similarity,0.994
+help,said, Similarity,0.994
+....
+

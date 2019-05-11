@@ -1,0 +1,74 @@
+{
+  "packagename":"org.ankus.mapreduce.algorithms.clustering.canopy",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	"appname":"Canopy Clustering", 
+	"appicon":"res/images/Canopy.png",		
+	"classname":"canopy",
+	"version": "0.1",
+	"appgroup": "CLUSTERING",	
+	"nexus":"ankus-core2-canopy-root.jar",	
+	"params":[			
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",			
+			 "iotype":"I"		 
+			},				
+			{
+			 "type":"text",
+			 "name":"t1",
+			 "description":"Canopy Threshold (T1)",
+			 "required":"N",			 
+			 "iotype":"I"		 
+			},			
+			{
+			 "type":"text",
+			 "name":"t2",
+			 "description":"Remove Threshold (T2)",
+			 "required":"N",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"distanceOption",
+			 "description":"Distance Option",
+			 "required":"N",
+			 "values":[
+				   {"value":"uclidean","option":"UCLIDEAN"},
+				   {"value":"manhattan","option":"MANHATTAN"}
+				], 
+			 "iotype":"I"		 
+			},			
+			{
+			 "type":"boolean",
+			 "name":"finalResultGen",
+			 "description":"Training Result Generation",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"I"		
+			}
+		]	
+	}
+  ]
+}

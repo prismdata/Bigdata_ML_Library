@@ -1,0 +1,96 @@
+package org.ankus.mapreduce.algorithms.clustering.FuzzyCMeans;
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.security.MessageDigest;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.HashMap;
+
+import org.ankus.util.ArgumentsConstants;
+import org.ankus.util.CommonMethods;
+import org.ankus.util.Constants;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Mapper_Centroid extends Mapper<Object, Text, Text, Text>{
+	int mb = 1024*1024;
+    private Logger logger = LoggerFactory.getLogger(Mapper_Centroid.class);
+    int iteration_count = 0;
+    int m_indexArr[];
+    int m_numericIndexArr[];
+    int m_exceptionIndexArr[];
+    int cluster_count = 0;
+    String delimiter = "";
+    double P = 0.0;
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException
+    {
+    	Configuration conf = context.getConfiguration();
+    	iteration_count = conf.getInt("iteration_count", 0);
+    	
+    	delimiter = conf.get(ArgumentsConstants.DELIMITER);
+    	//indexList
+    	m_indexArr = CommonMethods.convertIndexStr2IntArr(conf.get(ArgumentsConstants.TARGET_INDEX, "-1"));
+    	//Numbers of Cluster
+    	cluster_count = conf.getInt(ArgumentsConstants.Fuzzy_CMeans_K, 1);
+    	P = conf.getDouble(ArgumentsConstants.Fuzzy_CMeans_P, 2);
+    }
+    
+	@Override
+	protected void map(Object key, Text value, Context context) throws IOException, InterruptedException
+	{
+		
+		String[] instance_weight = value.toString().split("\u0001");			
+		String strVector = instance_weight[0];
+		String[] strElement = strVector.split(delimiter);			
+		String[] strWeight = instance_weight[1].split(":");
+		
+		//입력 데이터 : 원본 벡터, 클러스터별 가중치
+		//출력 : 클러스터 키 , 가중치가 적용된 벡터로 변환된 값.
+		double[] dblWeightedElmt = new double[m_indexArr.length];
+		int wvi = 0;
+		
+		for(int k = 0; k < cluster_count; k++)
+		{
+			wvi = 0;
+			for(int xindex = 0; xindex < strElement.length; xindex++)
+			{
+				if(CommonMethods.isContainIndex(m_indexArr,xindex , true))
+				{
+					NumberFormat formatter = new DecimalFormat("#0.000");
+					
+					double element = Double.parseDouble(strElement[ xindex ]);
+					double weight = Double.parseDouble(strWeight[k]);
+					dblWeightedElmt[wvi] = element * Math.pow(weight, 2);
+					
+					formatter.format(dblWeightedElmt[wvi] );
+					logger.info("xIndex:" + xindex + " " + " Cluster: " + k + " Wvi: " + wvi);
+//						logger.info("Element:" + strElement[ xindex ] + " " + "Weight: " + strWeight[k] + " WV:" + formatter.format(dblWeightedElmt[wvi]));
+					
+					//Cluster Number \t weight \u0002 Weighted
+					context.write(new Text(k+""), new Text(xindex + "\u0001" + weight +"\u0002" +  formatter.format(dblWeightedElmt[wvi])));
+					wvi++;
+				}
+			}
+		}
+	
+	}
+    protected void cleaup(Context context) throws IOException, InterruptedException
+    {
+		logger.info("cleanup");
+    }
+}

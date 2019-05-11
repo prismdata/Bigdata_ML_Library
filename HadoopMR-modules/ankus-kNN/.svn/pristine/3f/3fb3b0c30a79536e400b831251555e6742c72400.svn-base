@@ -1,0 +1,8 @@
+거리 기반 데이터 분류 모델
+
+수행 방법:
+hadoop jar ankus-core2-kNN-1.1.0.jar kNN -input [입력 데이터 파일 경로] -output [출력 데이터 폴더 경로] -delimiter [컬럼 구분자] -suppliedTest [모델 데이터 사용 여부] -modelPath [모델 데이터 경로] -indexList [분류에 사용할 수치형 데이터 컬럼 인덱스 리스트] -nominalIndexList [분류에 사용할 범주형 데이터 컬럼 인덱스 리스트] 
+-classIndex [분류에 사용할 레이블 컬럼 인덱스 리스트] -k [인접한 인스턴스의 갯수] -distanceOption [인스턴스간 거리 측정 방법] -distanceWeight [인스턴스간 거리의 가중치] -isValidation [모델 검증 결과 출력 여부]
+입력 데이터의 속성이 수치형으로만 존재할 경우 nominalIndexList를 생략함.
+입력 데이터의 속성이 범주형으로만 존재할 경우 indexList를 생략함.
+인접한 인스턴스의 갯수 : 양의 정수

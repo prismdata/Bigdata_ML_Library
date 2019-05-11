@@ -1,0 +1,104 @@
+package org.ankus.mapreduce.algorithms.clustering.FuzzyCMeans;
+
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.ankus.util.ArgumentsConstants;
+import org.ankus.util.CommonMethods;
+import org.ankus.util.Constants;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+public class Mapper_ClusterAssign extends Mapper<Object, Text, NullWritable, Text>{
+	int mb = 1024*1024;
+    private Logger logger = LoggerFactory.getLogger(Mapper_ClusterAssign.class);
+    int iteration_count = 0;
+    int m_indexArr[];	
+	int m_nominalIndexArr[];
+	int m_exceptionIndexArr[];
+    int cluster_count = 0;
+    String delimiter = "";
+    int class_idx = 0;
+    List<Membership> listMembership = new ArrayList<Membership>();
+    
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException
+    {
+    	Configuration conf = context.getConfiguration();
+    	iteration_count = conf.getInt("iteration_count", 0);    	
+    	delimiter = conf.get(ArgumentsConstants.DELIMITER);
+    	//indexList
+    	m_indexArr = CommonMethods.convertIndexStr2IntArr(conf.get(ArgumentsConstants.TARGET_INDEX, "-1"));
+    	class_idx = conf.getInt(ArgumentsConstants.CLUSTER_IDX, -1);
+    	m_exceptionIndexArr = CommonMethods.convertIndexStr2IntArr(conf.get(ArgumentsConstants.EXCEPTION_INDEX,  "-1"));
+    }
+    
+	@Override
+	//Calculrate inverse distance using Centroid matrix and raw data
+	//Comparing src is Controid Matrix and target is raw data.
+	protected void map(Object key, Text value, Context context) throws IOException, InterruptedException
+	{
+		String strInput = value.toString();
+		String[] token = strInput.split("\u0001");
+		String orgVector = token[0];
+		String[] strMembership = token[1].split(":");
+		double[] dblMembership = new double[strMembership.length];
+		double dblMax = Double.MAX_VALUE * -1;
+		int cluster_index = 0;
+
+		for(int mi = 0; mi < dblMembership.length; mi++)
+		{
+			double membership = Double.parseDouble(strMembership[mi]);
+			
+			if(membership > dblMax)
+			{
+				dblMax = membership;
+				cluster_index = mi;
+			}
+		}
+		orgVector = orgVector.substring(0, orgVector.length()-1);
+		String[] columns = orgVector.split(delimiter);
+		String writeValueStr = "";
+
+		for(int i=0; i<columns.length; i++)
+		{
+			if(!CommonMethods.isContainIndex(m_exceptionIndexArr, i, false))
+            {
+               if(CommonMethods.isContainIndex(m_indexArr, i, true))
+                {
+                    writeValueStr += columns[i] + delimiter;
+                }
+            }
+		}
+		if(class_idx != -1)
+			writeValueStr += columns[class_idx] + delimiter;
+		logger.info(writeValueStr   +cluster_index + "," + token[1]);
+		context.write(NullWritable.get(), new Text(writeValueStr   +cluster_index ));//+ "," + token[1]));
+
+	}
+	 @Override
+    protected void cleanup(Context context) throws IOException, InterruptedException
+    {
+		 logger.info("cleaup");
+    }
+}

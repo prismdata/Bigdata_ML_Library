@@ -1,0 +1,14 @@
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/util/Constants.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/algorithms/clustering/FuzzyCMeans/Mapper_Centroid.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/algorithms/clustering/FuzzyCMeans/Reducer_Random_Reducer.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/util/ConfigurationVariable.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/algorithms/clustering/FuzzyCMeans/FuzzyCMeansDriver.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/algorithms/clustering/FuzzyCMeans/Mapper_Membership.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/algorithms/clustering/FuzzyCMeans/Mapper_Random_Weight.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/algorithms/clustering/FuzzyCMeans/Mapper_ClusterAssign.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/algorithms/clustering/FuzzyCMeans/Reducer_Centroid.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/algorithms/clustering/FuzzyCMeans/Membership.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/mapreduce/AnkusDriver.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/util/ArgumentsConstants.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/util/CommonMethods.java
+/Users/hadoop/Documents/ankus/ankus_develop_workspace/ankus-core2-onycom/ankus-core2-modules/ankus-fuzzy-k-means/src/main/java/org/ankus/util/Usage.java

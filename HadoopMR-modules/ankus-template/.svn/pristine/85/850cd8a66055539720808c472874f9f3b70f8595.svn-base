@@ -1,0 +1,337 @@
+통계 기반 데이터 군집 모델 
+
+수행 방법 모델 생성 :
+hadoop ankus-core2-etl-1.1.0.jar \
+ETL \
+-input [입력 파일 또는 입력 폴더] \
+-output [출력 데이터 폴더 경로] \
+-delimiter [컬럼 구분자] \
+-etlMethod [데이터 변환 기능 선택{ColumnExtractor|FilterInclude|FilterExclude|Replace|NumericNorm|Sort}] \
+-indexList [데이터 변환을 수행할 대상 컬럼 리스트] \
+-exceptionIndexList [indexList에서 제외할 컬럼 리스트] \
+-filterRulePath [규칙이 기술된 파일 경로] \
+-filterRule [규칙이 기술된 문자열] \
+-Sort [오름 차순, 내림 차순 선택{asc|desc}] \
+-SortTarget [정렬 대상 1개 컬럼을 기술] \
+
+-Sort : etlMethod 값이 Sort일때 활성화
+-SortTarget : etlMethod 값이 Sort일때 활성화
+
+filterRule은 파일, 문자열 사용 중 하나만 사용함.
+-filterRulePath : etlMethod 값이 FilterInclude,FilterExclude,Replace,NumericNorm 일 경우 활성화됨.
+-filterRule : etlMethod 값이 FilterInclude,FilterExclude,Replace,NumericNorm 일 경우 활성화됨.
+
+수행 예제1 : 입력 파일에서 특정 컬럼만 추출하는 기능
+hadoop jar ankus-core2-etl-1.1.0.jar \
+ETL \
+-input /data/etl.csv \
+-output /result/etl_ColumnExtractor \
+-delimiter , \
+-etlMethod ColumnExtractor \
+-indexList 0,1
+
+*입력 예제
+........
+5.1,2.5,3,1.1,"Versicolor"
+5.7,2.8,4.1,1.3,"Versicolor"
+6.3,3.3,6,2.5,"Virginica"
+5.8,2.7,5.1,1.9,"Virginica"
+7.1,3,5.9,2.1,"Virginica"
+6.3,2.9,5.6,1.8,"Virginica"
+6.5,3,5.8,2.2,"Virginica"
+7.6,3,6.6,2.1,"Virginica"
+4.9,2.5,4.5,1.7,"Virginica"
+7.3,2.9,6.3,1.8,"Virginica"
+6.7,2.5,5.8,1.8,"Virginica"
+7.2,3.6,6.1,2.5,"Virginica"
+6.5,3.2,5.1,2,"Virginica"
+6.4,2.7,5.3,1.9,"Virginica"
+6.8,3,5.5,2.1,"Virginica"
+5.7,2.5,5,2,"Virginica"
+5.8,2.8,5.1,2.4,"Virginica"
+6.4,3.2,5.3,2.3,"Virginica"
+.........
+*출력 예제
+**/result/etl_ColumnExtractor/part-r-00000
+....
+6,2.9
+6.7,3
+6.8,2.8
+6.6,3
+6.4,2.9
+6.1,2.8
+6.3,2.5
+6.1,2.8
+5.9,3.2
+5.6,2.5
+6.2,2.2
+5.8,2.7
+5.6,3
+6.7,3.1
+....
+
+수행 예제2 : 입력 파일에서 특정 컬럼에서 특정 값을 포함하는 컬럼만 추출
+filterRule은 [컬럼번호, 찾으려는 값(문자열로 간주)]형태로 기입하며, 하나 이상의 규칙을 사용할 경우 논리 연산자인 "|" 혹은 "&"을 사용한다.
+hadoop jar ankus-core2-etl-1.1.0.jar ETL  -input /data/etl.csv -output  /result/etl_FilterInclude -delimiter , -etlMethod FilterInclude -filterRule '0,5.4|1,3.1'
+*입력 예제
+........
+5.1,2.5,3,1.1,"Versicolor"
+5.7,2.8,4.1,1.3,"Versicolor"
+6.3,3.3,6,2.5,"Virginica"
+5.8,2.7,5.1,1.9,"Virginica"
+7.1,3,5.9,2.1,"Virginica"
+6.3,2.9,5.6,1.8,"Virginica"
+6.5,3,5.8,2.2,"Virginica"
+7.6,3,6.6,2.1,"Virginica"
+4.9,2.5,4.5,1.7,"Virginica"
+7.3,2.9,6.3,1.8,"Virginica"
+6.7,2.5,5.8,1.8,"Virginica"
+7.2,3.6,6.1,2.5,"Virginica"
+6.5,3.2,5.1,2,"Virginica"
+6.4,2.7,5.3,1.9,"Virginica"
+6.8,3,5.5,2.1,"Virginica"
+5.7,2.5,5,2,"Virginica"
+5.8,2.8,5.1,2.4,"Virginica"
+6.4,3.2,5.3,2.3,"Virginica"
+.........
+*출력 예제
+**/result/etl_FilterExclude/part-r-00000
+....
+6.9,3.1,5.1,2.3,"Virginica"
+6.7,3.1,5.6,2.4,"Virginica"
+6.9,3.1,5.4,2.1,"Virginica"
+6.4,3.1,5.5,1.8,"Virginica"
+6.7,3.1,4.7,1.5,"Versicolor"
+5.4,3,4.5,1.5,"Versicolor"
+6.7,3.1,4.4,1.4,"Versicolor"
+6.9,3.1,4.9,1.5,"Versicolor"
+4.9,3.1,1.5,.2,"Setosa"
+5.4,3.4,1.5,.4,"Setosa"
+4.8,3.1,1.6,.2,"Setosa"
+5.4,3.4,1.7,.2,"Setosa"
+5.4,3.9,1.3,.4,"Setosa"
+5.4,3.7,1.5,.2,"Setosa"
+4.9,3.1,1.5,.1,"Setosa"
+5.4,3.9,1.7,.4,"Setosa"
+4.6,3.1,1.5,.2,"Setosa"
+....
+
+수행 예제3 : 입력 파일에서 특정 컬럼에서 특정 값을 포함하지 않는  컬럼만 추출
+filterRule은 [컬럼번호, 찾으려는 값(문자열로 간주)]형태로 기입하며, 하나 이상의 규칙을 사용할 경우 논리 연산자인 "|" 혹은 "&"을 사용한다.
+hadoop jar ankus-core2-etl-1.1.0.jar ETL  -input /data/etl.csv -output /result/etl_FilterExclude -delimiter , -etlMethod FilterExclude -filterRule '0,5.4|1,3.1'
+*입력 예제
+........
+5.1,2.5,3,1.1,"Versicolor"
+5.7,2.8,4.1,1.3,"Versicolor"
+6.3,3.3,6,2.5,"Virginica"
+5.8,2.7,5.1,1.9,"Virginica"
+7.1,3,5.9,2.1,"Virginica"
+6.3,2.9,5.6,1.8,"Virginica"
+6.5,3,5.8,2.2,"Virginica"
+7.6,3,6.6,2.1,"Virginica"
+4.9,2.5,4.5,1.7,"Virginica"
+7.3,2.9,6.3,1.8,"Virginica"
+6.7,2.5,5.8,1.8,"Virginica"
+7.2,3.6,6.1,2.5,"Virginica"
+6.5,3.2,5.1,2,"Virginica"
+6.4,2.7,5.3,1.9,"Virginica"
+6.8,3,5.5,2.1,"Virginica"
+5.7,2.5,5,2,"Virginica"
+5.8,2.8,5.1,2.4,"Virginica"
+6.4,3.2,5.3,2.3,"Virginica"
+.........
+*출력 예제
+**/result/etl/part-r-00000
+....
+6.3,2.3,4.4,1.3,"Versicolor"
+6,3.4,4.5,1.6,"Versicolor"
+6,2.7,5.1,1.6,"Versicolor"
+5.8,2.7,3.9,1.2,"Versicolor"
+5.5,2.4,3.7,1,"Versicolor"
+5.5,2.4,3.8,1.1,"Versicolor"
+6.3,2.5,4.9,1.5,"Versicolor"
+6.1,2.8,4,1.3,"Versicolor"
+5.9,3.2,4.8,1.8,"Versicolor"
+5.6,2.5,3.9,1.1,"Versicolor"
+6.2,2.2,4.5,1.5,"Versicolor"
+5.8,2.7,4.1,1,"Versicolor"
+5.6,3,4.5,1.5,"Versicolor"
+5.6,2.9,3.6,1.3,"Versicolor"
+6.1,2.9,4.7,1.4,"Versicolor"
+6,2.2,4,1,"Versicolor"
+5.9,3,4.2,1.5,"Versicolor"
+5,2,3.5,1,"Versicolor"
+5.2,2.7,3.9,1.4,"Versicolor"
+6.6,2.9,4.6,1.3,"Versicolor"
+4.9,2.4,3.3,1,"Versicolor"
+6.3,3.3,4.7,1.6,"Versicolor"
+5.7,2.8,4.5,1.3,"Versicolor"
+....
+
+수행 예제4 : 입력 파일에서 특정 컬럼에서 특정 값을 다른 값으로 교체함.(문자열 교체 방식)
+filterRule은 [컬럼번호, 찾으려는 값(문자열로 간주)]형태로 기입하며, 하나 이상의 규칙을 사용할 경우 논리 연산자인 "|" 혹은 "&"을 사용한다.
+hadoop jar ankus-core2-etl-1.1.0.jar ETL  -input /data/etl.csv -output /result/etl_Replace -delimiter , -etlMethod Replace -ReplaceRule '0,5.1,x'
+*입력 예제
+........
+5.1,2.5,3,1.1,"Versicolor"
+5.7,2.8,4.1,1.3,"Versicolor"
+6.3,3.3,6,2.5,"Virginica"
+5.8,2.7,5.1,1.9,"Virginica"
+7.1,3,5.9,2.1,"Virginica"
+6.3,2.9,5.6,1.8,"Virginica"
+6.5,3,5.8,2.2,"Virginica"
+7.6,3,6.6,2.1,"Virginica"
+4.9,2.5,4.5,1.7,"Virginica"
+7.3,2.9,6.3,1.8,"Virginica"
+6.7,2.5,5.8,1.8,"Virginica"
+7.2,3.6,6.1,2.5,"Virginica"
+6.5,3.2,5.1,2,"Virginica"
+6.4,2.7,5.3,1.9,"Virginica"
+6.8,3,5.5,2.1,"Virginica"
+5.7,2.5,5,2,"Virginica"
+5.8,2.8,5.1,2.4,"Virginica"
+6.4,3.2,5.3,2.3,"Virginica"
+.........
+*출력 예제
+**/result/etl_Replace/part-r-00000
+....
+4.8,3.1,1.6,.2,"Setosa"
+4.7,3.2,1.6,.2,"Setosa"
+5.2,3.4,1.4,.2,"Setosa"
+5.2,3.5,1.5,.2,"Setosa"
+5,3.4,1.6,.4,"Setosa"
+5,3,1.6,.2,"Setosa"
+4.8,3.4,1.9,.2,"Setosa"
+x,3.3,1.7,.5,"Setosa"
+4.6,3.6,1,.2,"Setosa"
+x,3.7,1.5,.4,"Setosa"
+5.4,3.4,1.7,.2,"Setosa"
+x,3.8,1.5,.3,"Setosa"
+5.7,3.8,1.7,.3,"Setosa"
+x,3.5,1.4,.3,"Setosa"
+5.4,3.9,1.3,.4,"Setosa"
+5.7,4.4,1.5,.4,"Setosa"
+5.8,4,1.2,.2,"Setosa"
+4.3,3,1.1,.1,"Setosa"
+....
+
+수행 예제5 : 입력 파일에서 특정 컬럼에서 특정 조건(수치 범위)를 만족하는 값을 다른 값으로 교체 함.
+교체 규칙은 [컬럼번호, 찾으려는 조건]형태로 기입한다.
+hadoop jar ankus-core2-etl-1.1.0.jar ETL  -input /data/etl.csv -output /result/etl_NumericNorm -delimiter , -etlMethod NumericNorm -NumericForm '4<x<=5->Mid'
+*입력 예제
+........
+5.1,2.5,3,1.1,"Versicolor"
+5.7,2.8,4.1,1.3,"Versicolor"
+6.3,3.3,6,2.5,"Virginica"
+5.8,2.7,5.1,1.9,"Virginica"
+7.1,3,5.9,2.1,"Virginica"
+6.3,2.9,5.6,1.8,"Virginica"
+6.5,3,5.8,2.2,"Virginica"
+7.6,3,6.6,2.1,"Virginica"
+4.9,2.5,4.5,1.7,"Virginica"
+7.3,2.9,6.3,1.8,"Virginica"
+6.7,2.5,5.8,1.8,"Virginica"
+7.2,3.6,6.1,2.5,"Virginica"
+6.5,3.2,5.1,2,"Virginica"
+6.4,2.7,5.3,1.9,"Virginica"
+6.8,3,5.5,2.1,"Virginica"
+5.7,2.5,5,2,"Virginica"
+5.8,2.8,5.1,2.4,"Virginica"
+6.4,3.2,5.3,2.3,"Virginica"
+.........
+*출력 예제
+**/result/etl_NumericNorm/part-r-00000
+....
+Mid,3.2,1.6,.2,"Setosa"
+5.2,3.4,1.4,.2,"Setosa"
+5.2,3.5,1.5,.2,"Setosa"
+Mid,3.4,1.6,.4,"Setosa"
+Mid,3,1.6,.2,"Setosa"
+Mid,3.4,1.9,.2,"Setosa"
+5.1,3.3,1.7,.5,"Setosa"
+Mid,3.6,1,.2,"Setosa"
+5.1,3.7,1.5,.4,"Setosa"
+5.4,3.4,1.7,.2,"Setosa"
+5.1,3.8,1.5,.3,"Setosa"
+5.7,3.8,1.7,.3,"Setosa"
+5.1,3.5,1.4,.3,"Setosa"
+5.4,3.9,1.3,.4,"Setosa"
+5.7,Mid,1.5,.4,"Setosa"
+5.8,4,1.2,.2,"Setosa"
+Mid,3,1.1,.1,"Setosa"
+Mid,3,1.4,.1,"Setosa"
+Mid,3.4,1.6,.2,"Setosa"
+5.4,3.7,1.5,.2,"Setosa"
+Mid,3.1,1.5,.1,"Setosa"
+Mid,2.9,1.4,.2,"Setosa"
+Mid,3.4,1.5,.2,"Setosa"
+....
+
+수행 예제6 : 입력 파일에서 특정 컬럼을 중심으로 오름 차순 정렬을 수행한다.
+hadoop jar ankus-core2-etl-1.1.0.jar ETL  -input /data/etl.csv -output /result/etl_Sort -delimiter , -etlMethod Sort -Sort asc -SortTarget 1
+*입력 예제
+........
+5.1,2.5,3,1.1,"Versicolor"
+5.7,2.8,4.1,1.3,"Versicolor"
+6.3,3.3,6,2.5,"Virginica"
+5.8,2.7,5.1,1.9,"Virginica"
+7.1,3,5.9,2.1,"Virginica"
+6.3,2.9,5.6,1.8,"Virginica"
+6.5,3,5.8,2.2,"Virginica"
+7.6,3,6.6,2.1,"Virginica"
+4.9,2.5,4.5,1.7,"Virginica"
+7.3,2.9,6.3,1.8,"Virginica"
+6.7,2.5,5.8,1.8,"Virginica"
+7.2,3.6,6.1,2.5,"Virginica"
+6.5,3.2,5.1,2,"Virginica"
+6.4,2.7,5.3,1.9,"Virginica"
+6.8,3,5.5,2.1,"Virginica"
+5.7,2.5,5,2,"Virginica"
+5.8,2.8,5.1,2.4,"Virginica"
+6.4,3.2,5.3,2.3,"Virginica"
+.........
+*출력 예제
+**/result/etl_NumericNorm/part-r-00000
+5	2	3.5	1	Versicolor
+6	2.2	5	1.5	Virginica
+6	2.2	4	1	Versicolor
+6.2	2.2	4.5	1.5	Versicolor
+5	2.3	3.3	1	Versicolor
+4.5	2.3	1.3	0.3	Setosa
+5.5	2.3	4	1.3	Versicolor
+6.3	2.3	4.4	1.3	Versicolor
+4.9	2.4	3.3	1	Versicolor
+5.5	2.4	3.7	1	Versicolor
+5.5	2.4	3.8	1.1	Versicolor
+5.1	2.5	3	1.1	Versicolor
+6.7	2.5	5.8	1.8	Virginica
+5.5	2.5	4	1.3	Versicolor
+5.6	2.5	3.9	1.1	Versicolor
+5.7	2.5	5	2	Virginica
+....
+4.3	3	1.1	0.1	Setosa
+4.8	3	1.4	0.1	Setosa
+4.9	3	1.4	0.2	Setosa
+6.7	3.1	5.6	2.4	Virginica
+6.9	3.1	5.1	2.3	Virginica
+4.9	3.1	1.5	0.2	Setosa
+6.9	3.1	4.9	1.5	Versicolor
+4.6	3.1	1.5	0.2	Setosa
+6.7	3.1	4.4	1.4	Versicolor
+4.8	3.1	1.6	0.2	Setosa
+6.7	3.1	4.7	1.5	Versicolor
+...
+5.4	3.7	1.5	0.2	Setosa
+7.7	3.8	6.7	2.2	Virginica
+7.9	3.8	6.4	2	Virginica
+5.1	3.8	1.6	0.2	Setosa
+5.1	3.8	1.9	0.4	Setosa
+5.1	3.8	1.5	0.3	Setosa
+5.7	3.8	1.7	0.3	Setosa
+5.4	3.9	1.3	0.4	Setosa
+5.4	3.9	1.7	0.4	Setosa
+5.8	4	1.2	0.2	Setosa
+5.2	4.1	1.5	0.1	Setosa
+5.5	4.2	1.4	0.2	Setosa
+5.7	4.4	1.5	0.4	Setosa
+....

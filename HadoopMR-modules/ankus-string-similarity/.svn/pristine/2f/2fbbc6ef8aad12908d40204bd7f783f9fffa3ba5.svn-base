@@ -1,0 +1,36 @@
+문자열의 유사도를 계산하는 모듈:
+
+수행 방법:
+hadoop jar ankus-core2-string-similarity-1.1.0.jar StringDataCorrelation -input [입력 데이터 파일 경로] -output [출력 데이터 폴더 경로] -delimiter [속성 구분자] -keyIndex [데이터 식별자를 위한 속성 인덱스] -computeIndex [계산할 속성의 인덱스] -algorithmOption [유사도/거리 계산 옵션 edit, hamming 중 하나 선택]
+
+수행 예제 1:
+hadoop jar ankus-core2-string-similarity-1.1.0.jar StringDataCorrelation -input /data/string_sim_1.csv -output /result/string_similarity -delimiter , -keyIndex 0 -computeIndex 1 -algorithmOption edit
+*입력 파일:
+u,string
+w,stream
+
+*출력 파일1:
+**/result/string_similarity/part-r-00000
+u	w	3.0
+
+수행 예제 2:
+hadoop jar ankus-core2-string-similarity-1.1.0.jar StringDataCorrelation -input /data/string_sim_1.csv -output /result/string_similarity -delimiter , -keyIndex 0 -computeIndex 1 -algorithmOption edit
+*입력 파일:
+u,stremm
+w,stream
+
+*출력 파일1:
+**/result/string_similarity/part-r-00000
+u	w	1.0
+
+
+수행 예제 3:
+hadoop jar ankus-core2-string-similarity-1.1.0.jar StringDataCorrelation -input /data/string_sim_0.csv -output /result/string_similarity -delimiter , -keyIndex 0 -computeIndex 1 -algorithmOption edit
+*입력 파일:
+u,stream
+w,stream
+
+*출력 파일1:
+**/result/string_similarity/part-r-00000
+u	w	0.0
+u	w	0.0

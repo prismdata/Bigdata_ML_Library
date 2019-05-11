@@ -1,0 +1,36 @@
+{
+  "packagename":"org.ankus.mapreduce.algorithms.correlation.booleanset",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	"appname":"Boolean Similarity/Correlation", 
+	"appicon":"res/images/simcorr_row_binary.png",		
+	"classname":"BooleanDataCorrelation",
+	"version": "0.1",
+	"appgroup": "CORRELATION",	
+	"nexus":"ankus-core2-boolean-sim-1.1.0.jar",	
+	"params":[		
+			{
+			 "type":"columnselect",
+			 "name":"keyIndex",
+			 "description":"Identifier Attribute(Index)",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"algorithmOption",
+			 "description":"Similarity/Correlation Algorithm",
+			 "required":"N",
+			 "values":[
+			       {"value":"dice","option":"DICE COEFFICIENT"},
+				   {"value":"jaccard","option":"JACCARD COEFFICIENT"},
+				   {"value":"hamming","option":"HAMMING DISTANCE"}
+				   ], 
+			 "iotype":"I"		 
+			}		
+		]	
+	}
+  ]
+}

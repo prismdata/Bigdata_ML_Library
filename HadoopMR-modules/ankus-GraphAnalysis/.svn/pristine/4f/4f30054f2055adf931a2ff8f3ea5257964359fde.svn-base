@@ -1,0 +1,1447 @@
+{
+  "packagename":"onycom_Analyzer_package",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	"appname":"Numeric Statistics (Distribution)", 
+	"appicon":"res/images/stats_numeric.png",		
+	"classname":"NumericStatistics",
+	"version": "0.1",
+	"appgroup": "STATISTICS",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		
+			}			
+		]	
+	},
+	{
+	"appname":"Nominal Statistics (Distribution)", 
+	"appicon":"res/images/stats_norminal.png",	
+	"classname":"NominalStatistics",
+	"version": "0.1",
+	"appgroup": "STATISTICS",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnselect",
+			 "name":"indexList",
+			 "description":"Target Attribute(Index)",
+			 "required":"Y",
+			 "iotype":"I"		 
+			}	
+		]
+	},
+	
+	{
+	"appname":"Certainty Factor based Sum", 
+	"appicon":"res/images/stats_cfsum.png",	
+	"classname":"CertaintyFactorSUM",
+	"version": "0.1",
+	"appgroup": "STATISTICS",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"text",
+			 "name":"cfsumMax",
+			 "description":"Max Value For Certainty Factor",
+			 "required":"N",			
+			 "iotype":"I"		 
+			}			
+		]
+	},	
+	{
+	 "appname":"TFIDF", 
+	 "appicon":"res/images/icon_tf_idf.png",         
+	 "classname":"TFIDF",
+	 "version": "0.1",
+	 "appgroup": "STATISTICS",
+	 "nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",
+	 "inputsamplefile":"resources/TFIDF",
+	 "outputsamplefile":"resources/TFIDF_result",
+	 "params":[		
+	 			{
+					 "type":"text",
+					 "name":"TFIDF_Threshold",
+					 "description":"TFIDF Threshold",	
+					 "required":"Y",
+					 "values":"0.001",
+					 "iotype":"I"		 
+				}]
+	},
+	{
+	 "appname":"DocumentSimilarity",  
+	 "appicon":"res/images/icon_docsimilty.png",				 
+	 "classname":"DocumentSimilarity",
+	 "version": "0.1",
+	 "appgroup": "STATISTICS",
+	 "nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",
+	 "inputsamplefile":"resources/doc_similarity",
+	 "outputsamplefile":"resources/doc_similarity_result"
+	},	
+	{
+	"appname":"Min/Max Normalization", 
+	"appicon":"res/images/pre_normalization.png",	
+	"classname":"Normalization",
+	"version": "0.1",
+	"appgroup": "PREPROCESSING",
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"boolean",
+			 "name":"remainAllFields",
+			 "description":"Print All Attributes",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"I"		
+			}			
+		]
+	},
+	{
+	"appname":"ETL", 
+	"appicon":"res/images/ETL.png",	
+	"classname":"ETL",
+	"version": "0.1",
+	"appgroup": "PREPROCESSING",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"combo",
+			 "name":"etlMethod",
+			 "description":"Method",
+			 "required":"N",
+			 "values":[
+			       {"value":"ColumnExtractor","option":"Column Extractor"},
+				   {"value":"FilterInclude","option":"Filter Include"},
+				   {"value":"FilterExclude","option":"Filter Exclude"},
+				   {"value":"Replace","option":"Replace"},
+				   {"value":"NumericNorm","option":"Categorization"},
+				   {"value":"RowSort","option":"Rows Sort"}
+				   ], 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Include Attributes(Index) List",
+			 "required":"Y",
+			 "filter":"etlMethod=='ColumnExtractor'",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"boolean",
+			 "name":"ruleType",
+			 "description":"Rule Type",
+			 "required":"Y",
+			 "values":[
+			       {"value":"file","option":"File"},
+				   {"value":"text","option":"Text"}
+				],
+			 "filter":"etlMethod=='FilterInclude' || etlMethod=='FilterExclude' || etlMethod=='Replace' || etlMethod=='NumericNorm'",		
+			 "iotype":"D"		
+			},
+			{
+			 "type":"subinput",
+			 "name":"filterRulePath",
+			 "description":"Rule(File)",
+			 "required":"N",
+			 "filter":"(etlMethod=='FilterInclude' || etlMethod=='FilterExclude' ) && ruleType == 'file'",	
+			 "iotype":"I"			 
+			},
+			{
+			 "type":"text",
+			 "name":"filterRule",
+			 "description":"Rule(Text) <br>ex: 'Column ID,value1|Column ID,value2' ",
+			 "required":"N",	
+			 "filter":"(etlMethod=='FilterInclude' || etlMethod=='FilterExclude' ) && ruleType == 'text'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"subinput",
+			 "name":"ReplaceRulePath",
+			 "description":"Rule(File)",
+			 "required":"N",
+			 "filter":"(etlMethod=='Replace') && ruleType == 'file'",	
+			 "iotype":"I"			 
+			},
+			{
+			 "type":"text",
+			 "name":"ReplaceRule",
+			 "description":"Rule(Text) <br>ex:'Column ID, RegExpress, New Value' ",
+			 "required":"N",	
+			 "filter":"(etlMethod=='Replace') && ruleType == 'text'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"subinput",
+			 "name":"NumericFormFile",
+			 "description":"Rule(File)",
+			 "required":"Y",
+			 "filter":"(etlMethod=='NumericNorm') && ruleType == 'file'",	
+			 "iotype":"I"			 
+			},
+			{
+			 "type":"text",
+			 "name":"NumericForm",
+			 "description":"Rule(Text) <br> ex: 'var1<=x<=var2->New Value'",
+			 "required":"Y",	
+			 "filter":"(etlMethod=='NumericNorm') && ruleType == 'text'",
+			 "iotype":"I"
+			},
+			{
+			 "type":"combo",
+			 "name":"Sort",
+			 "description":"Sort row order",
+			 "required":"N",
+			 "values":[
+			       {"value":"asc","option":"Ascending"},
+				   {"value":"desc","option":"Descending"}
+				   ], 
+			 "filter":"etlMethod =='RowSort'",
+			 "iotype":"I"
+			},
+			{
+			 "type":"text",
+			 "name":"SortTarget",
+			 "description":"Sort index",
+			 "required":"N",
+			 "filter":"etlMethod =='RowSort'",
+			 "iotype":"I"		 
+			}					
+		]
+	},	
+	{
+	"appname":"EM Discretization", 
+	"appicon":"res/images/Discretization.png",		
+	"classname":"Discretization",
+	"version": "0.1",
+	"appgroup": "PREPROCESSING",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		
+			}		
+		]	
+	},	
+	{
+	 "appname":"MDL Discretization", 
+	 "appicon":"res/images/icon_mdl.png",     
+	 "classname":"EntropyDiscretization",
+	 "version": "0.1",
+	 "appgroup": "PREPROCESSING",
+	 "nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",
+	 "params":[
+	 		{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			 {
+			 "type":"columnselect",
+			 "name":"classIndex",
+			 "description":"Class Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			}
+		]			
+	},	
+	{
+	"appname":"Boolean Similarity/Correlation", 
+	"appicon":"res/images/simcorr_row_binary.png",		
+	"classname":"BooleanDataCorrelation",
+	"version": "0.1",
+	"appgroup": "CORRELATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnselect",
+			 "name":"keyIndex",
+			 "description":"Identifier Attribute(Index)",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"algorithmOption",
+			 "description":"Similarity/Correlation Algorithm",
+			 "required":"N",
+			 "values":[
+			       {"value":"dice","option":"DICE COEFFICIENT"},
+				   {"value":"jaccard","option":"JACCARD COEFFICIENT"},
+				   {"value":"hamming","option":"HAMMING DISTANCE"}
+				   ], 
+			 "iotype":"I"		 
+			}		
+		]	
+	},
+	{
+	"appname":"Numeric Similarity/Correlation", 
+	"appicon":"res/images/simcorr_row_numeric.png",		
+	"classname":"NumericDataCorrelation",
+	"version": "0.1",
+	"appgroup": "CORRELATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"keyIndex",
+			 "description":"Identifier Attribute(Index)",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"algorithmOption",
+			 "description":"Similarity/Correlation Algorithm",
+			 "required":"N",
+			 "values":[
+				   {"value":"cosine","option":"Cosine Coefficient"},
+				   {"value":"pearson","option":"Pearson Coefficient"},
+				   {"value":"manhattan","option":"Manhattan Distance"},
+				   {"value":"uclidean","option":"Uclidean Distance"}
+				   ], 
+			 "iotype":"I"		 
+			}		
+		]	
+	},
+	{
+	"appname":"String Similarity", 
+	"appicon":"res/images/simcorr_row_string.png",		
+	"classname":"StringDataCorrelation",
+	"version": "0.1",
+	"appgroup": "CORRELATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnselect",
+			 "name":"keyIndex",
+			 "description":"Identifier Attribute(Index)",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnselect",
+			 "name":"computeIndex",
+			 "description":"Target Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"algorithmOption",
+			 "description":"Similarity/Correlation Algorithm",
+			 "required":"N",
+			 "values":[
+				   {"value":"edit","option":"EDIT COEFFICIENT"},				
+				   {"value":"hamming","option":"HAMMING DISTANCE"}
+				   ], 
+			 "iotype":"I"		 
+			}		
+		]	
+	},
+	{
+	"appname":"Column based Similarity/Correlation", 
+	"appicon":"res/images/simcorr_column.png",		
+	"classname":"ColumnCorrelation",
+	"version": "0.1",
+	"appgroup": "CORRELATION",
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"algorithmOption",
+			 "description":"Similarity/Correlation Algorithm",
+			 "required":"N",
+			 "values":[
+				   {"value":"hamming","option":"HAMMING DISTANCE"},				
+				   {"value":"dice","option":"DICE COEFFICIENT"},
+				   {"value":"jaccard","option":"JACCARD COEFFICIENT"},
+				   {"value":"tanimoto","option":"TANIMOTO COEFFICIENT"},
+				   {"value":"manhatan","option":"MANHATAN DISTANCE"},
+				   {"value":"uclidean","option":"UCLIDEAN DISTANCE"},
+				   {"value":"cosine","option":"COSINE COEFFICIENT"},
+				   {"value":"pearson","option":"PEARSON COEFFICIENT"},
+				   {"value":"matching","option":"MATCHING COEFFICIENT"},
+				   {"value":"edit","option":"EDIT DISTANCE"}
+				   ], 
+			 "iotype":"I"		 
+			}		
+		]	
+	},
+	{
+	"appname":"FPGrowth", 
+	"appicon":"res/images/FPGrowth.png",		
+	"classname":"PFP-growth",
+	"version": "0.1",
+	"appgroup": "ASSOCIATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"text",
+			 "name":"minSup",
+			 "description":"Minimum Support",
+			 "required":"Y",
+			 "values":"0.2",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"maxRuleLength",
+			 "description":"Maximum Rule Length",
+			 "required":"N",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"metricType",
+			 "description":"metric Type",
+			 "required":"N",
+			 "values":[
+				   {"value":"confidence","option":"confidence"},				
+				   {"value":"lift","option":"lift"}
+				   ], 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"metricValue",
+			 "description":"Metric Value",	
+			 "required":"Y",
+			 "values":"0.225",
+			 "iotype":"I"		 
+			},	
+			{
+			 "type":"text",
+			 "name":"ruleCount",
+			 "description":"Top-N Rules",
+			 "required":"N",			 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"targetItemList",
+			 "description":"Target Item List",
+			 "required":"N",			 
+			 "iotype":"I"		 
+			}
+		]	
+	},
+	{
+	"appname":"ID3 Classification", 
+	"appicon":"res/images/ml_classify_id3.png",		
+	"classname":"ID3",
+	"version": "0.1",
+	"appgroup": "CLASSIFICATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[	
+			{
+			 "type":"boolean",
+			 "name":"suppliedTest",
+			 "description":"Supplied Test Set",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"D"			 
+			}, 
+			{
+			 "type":"subinput",
+			 "name":"modelPath",
+			 "description":"Input model path",
+			 "required":"N",
+			 "filter":"suppliedTest=='true'",
+			 "iotype":"I"			 
+			}, 
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",	
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnselect",
+			 "name":"classIndex",
+			 "description":"Class Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"minLeafData",
+			 "description":"Pruning - Minimum Data Count",	
+			 "required":"Y",
+			 "values":"2",
+			 "filter":"suppliedTest=='false'",	
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"purity",
+			 "description":"Pruning - Leaf Node Purity",	
+			 "required":"Y",
+			 "values":"0.75",
+			 "filter":"suppliedTest=='false'",	
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"boolean",
+			 "name":"finalResultGen",
+			 "description":"Training Result Generation",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "filter":"suppliedTest=='false'",	
+			 "iotype":"I"		
+			}	
+		]	
+	},
+	{
+	 "appname":"C4.5", 
+	 "appicon":"res/images/icon_c_4_5.png",         
+	 "classname":"C45",
+	 "version": "0.1",
+	 "appgroup": "CLASSIFICATION",
+	 "nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	 "params":[
+			{
+			 "type":"boolean",
+			 "name":"suppliedTest",
+			 "description":"Supplied Test Set",
+			 "required":"Y",
+			 "values":[
+				   {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"D"			 
+			}, 
+			{
+			 "type":"subinput",
+			 "name":"modelPath",
+			 "description":"Input model path",
+			 "required":"N",
+			 "filter":"suppliedTest=='true'",
+			 "iotype":"I"			 
+			}, 
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Input Attributes(Norminal) List",
+			 "required":"N",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Input Attributes(Numeric) List",
+			 "required":"N",
+			 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnselect",
+			 "name":"classIndex",
+			 "description":"Output Class Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"minLeafData",
+			 "description":"Pruning - Minimum Data Count",	
+			 "required":"Y",
+			 "values":"2",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"boolean",
+			 "name":"finalResultGen",
+			 "description":"Training Result Generation",
+			 "required":"Y",
+			 "values":[
+				   {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "filter":"suppliedTest=='false'",	
+			 "iotype":"I"		
+			}
+		],
+		"inputsamplefile":"resources/C45",
+		"outputsamplefile":"resources/C45_result"
+	},	
+	{
+	"appname":"Naive Bayes Classification", 
+	"appicon":"res/images/NaiveBayes.png",		
+	"classname":"NaiveBayes",
+	"version": "0.1",
+	"appgroup": "CLASSIFICATION",
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[
+			{
+			 "type":"boolean",
+			 "name":"suppliedTest",
+			 "description":"Supplied Test Set",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"D"			 
+			},  
+			{
+			 "type":"subinput",
+			 "name":"modelPath",
+			 "description":"Input model path",
+			 "required":"N",
+			 "filter":"suppliedTest=='true'",
+			 "iotype":"I"			 
+			}, 
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnselect",
+			 "name":"classIndex",
+			 "description":"Class Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},			
+			{
+			 "type":"boolean",
+			 "name":"finalResultGen",
+			 "description":"Training Result Generation",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "filter":"suppliedTest=='false'",	
+			 "iotype":"I"		
+			}	
+		]	
+	},
+	{
+	"appname":"MLP", 
+	"appicon":"res/images/icon_mlp_2.png",		
+	"classname":"MultilayerPerceptron",
+	"version": "0.1",
+	"appgroup": "CLASSIFICATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"numericIndexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnselect",
+			 "name":"classIndex",
+			 "description":"Class Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"seed",
+			 "description":"Seed",
+			 "required":"Y",
+			 "values":"12",			 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"numHiddenNodes",
+			 "description":"Number Hidden Nodes",	
+			 "required":"Y",
+			 "values":"5",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"learningRate",
+			 "description":"learning Rate",	
+			 "required":"Y",
+			 "values":"0.3",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"momentum",
+			 "description":"Momentum",	
+			 "required":"Y",
+			 "values":"0.2",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"endCondition",
+			 "description":"End Condition",	
+			 "required":"Y",
+			 "values":"0",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"maxEpoch",
+			 "description":"Max Epoch",	
+			 "required":"Y",
+			 "values":"500",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"subMaxEpoch",
+			 "description":"Sub Max Epoch",	
+			 "required":"Y",
+			 "values":"1",
+			 "iotype":"I"		 
+			}	
+		]	
+	},
+	{
+	"appname":"kNN Classification", 
+	"appicon":"res/images/kNN.png",		
+	"classname":"kNN",
+	"version": "0.1",
+	"appgroup": "CLASSIFICATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[	
+			{
+			 "type":"boolean",
+			 "name":"suppliedTest",
+			 "description":"Supplied Test Set",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"D"			 
+			},  
+			{
+			 "type":"subinput",
+			 "name":"modelPath",
+			 "description":"Input model path",
+			 "required":"N",
+			 "filter":"suppliedTest=='true'",
+			 "iotype":"I"			 
+			}, 
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnselect",
+			 "name":"classIndex",
+			 "description":"Class Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},		
+			{
+			 "type":"text",
+			 "name":"k",
+			 "description":"k",
+			 "required":"Y",
+			 "values":"2",
+	
+			 "iotype":"I"		 
+			},	
+			{
+			 "type":"combo",
+			 "name":"distanceOption",
+			 "description":"Distance Option",
+			 "required":"N",
+			 "values":[
+				   {"value":"uclidean","option":"UCLIDEAN"},				
+				   {"value":"manhattan","option":"MANHATTAN"}
+				   ], 
+
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"boolean",
+			 "name":"distanceWeight",
+			 "description":"Distance Weight Adaptation",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+
+			 "iotype":"I"		
+			},
+			{
+			 "type":"boolean",
+			 "name":"isValidation",
+			 "description":"Cross Vaildation Generate",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+
+			 "iotype":"I"		
+			}
+		]	
+	},	
+	{
+	 "appname":"GraphAnalysis",
+	 "appicon":"res/images/icon_graph_analysis.png",				  
+	 "classname":"GraphAnalysis",
+	 "version": "0.1",
+	 "appgroup": "CLASSIFICATION",
+	 "nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",		 
+	 "inputsamplefile":"resources/GraphAnalysis",
+	 "outputsamplefile":"resources/GraphAnalysisOutput"
+	},
+	{
+	"appname":"K-Means Clustering", 
+	"appicon":"res/images/ml_cluster_kmeans.png",		
+	"classname":"KMeans",
+	"version": "0.1",
+	"appgroup": "CLUSTERING",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[	
+			{
+			 "type":"boolean",
+			 "name":"suppliedTest",
+			 "description":"Supplied Test Set",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"D"			 
+			}, 
+			{
+			 "type":"subinput",
+			 "name":"modelPath",
+			 "description":"Supplied Input Path",
+			 "required":"N",
+			 "filter":"suppliedTest=='true'",
+			 "iotype":"I"			 
+			}, 	
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "filter":"suppliedTest=='false'",			 
+			 "iotype":"I"		 
+			},				
+			{
+			 "type":"text",
+			 "name":"clusterCnt",
+			 "description":"Number Of Clusters",
+			 "required":"Y",
+			 "values":"2",
+			 "iotype":"I"		 
+			},	
+			{
+			 "type":"text",
+			 "name":"convergeRate",
+			 "description":"Converge Rate",
+			 "required":"Y",
+			 "values":"0.001",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"maxIteration",
+			 "description":"Max Iteration",
+			 "required":"Y",
+			 "values":"100",
+			 "iotype":"I"		 
+			},			
+			{
+			 "type":"boolean",
+			 "name":"finalResultGen",
+			 "description":"Training Result Generation",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"I"		
+			}
+		]	
+	},
+	{
+	"appname":"Fuzzy C-Means Clustering", 
+	"appicon":"res/images/icon_Fuzzy_C-means.png",		
+	"classname":"FuzzyCMeans",
+	"version": "0.1",
+	"appgroup": "CLUSTERING",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[	
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "filter":"suppliedTest=='false'",			 
+			 "iotype":"I"		 
+			},				
+			{
+			 "type":"text",
+			 "name":"k",
+			 "description":"Number Of Clusters",
+			 "required":"Y",
+			 "values":"2",
+			 "iotype":"I"		 
+			},	
+			{
+			 "type":"text",
+			 "name":"p",
+			 "description":"Weight",
+			 "required":"Y",
+			 "values":"0.001",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"maxIteration",
+			 "description":"Max Iteration",
+			 "required":"Y",
+			 "values":"100",
+			 "iotype":"I"		 
+			}
+		]	
+	},
+	{
+	"appname":"EM Clustering", 
+	"appicon":"res/images/ml_cluster_em.png",		
+	"classname":"EM",
+	"version": "0.1",
+	"appgroup": "CLUSTERING",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"boolean",
+			 "name":"suppliedTest",
+			 "description":"Supplied Test Set",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"D"			 
+			}, 
+			{
+			 "type":"subinput",
+			 "name":"modelPath",
+			 "description":"Supplied Input Path",
+			 "required":"N",
+			 "filter":"suppliedTest=='true'",
+			 "iotype":"I"			 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "filter":"suppliedTest=='false'",			 
+			 "iotype":"I"		 
+			},				
+			{
+			 "type":"text",
+			 "name":"clusterCnt",
+			 "description":"Number Of Clusters",
+			 "required":"Y",
+			 "values":"2",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},	
+			{
+			 "type":"text",
+			 "name":"convergeRate",
+			 "description":"Converge Rate",
+			 "required":"Y",
+			 "values":"0.001",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"maxIteration",
+			 "description":"Max Iteration",
+			 "required":"Y",
+			 "values":"100",
+			 "filter":"suppliedTest=='false'",
+			 "iotype":"I"		 
+			},			
+			{
+			 "type":"boolean",
+			 "name":"finalResultGen",
+			 "description":"Training Result Generation",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "filter":"suppliedTest=='false'",	
+			 "iotype":"I"		
+			}
+		]	
+	},
+	{
+	"appname":"Canopy Clustering", 
+	"appicon":"res/images/Canopy.png",		
+	"classname":"canopy",
+	"version": "0.1",
+	"appgroup": "CLUSTERING",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[			
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",			
+			 "iotype":"I"		 
+			},				
+			{
+			 "type":"text",
+			 "name":"t1",
+			 "description":"Canopy Threshold (T1)",
+			 "required":"N",			 
+			 "iotype":"I"		 
+			},			
+			{
+			 "type":"text",
+			 "name":"t2",
+			 "description":"Remove Threshold (T2)",
+			 "required":"N",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"distanceOption",
+			 "description":"Distance Option",
+			 "required":"N",
+			 "values":[
+				   {"value":"uclidean","option":"UCLIDEAN"},
+				   {"value":"manhattan","option":"MANHATTAN"}
+				], 
+			 "iotype":"I"		 
+			},			
+			{
+			 "type":"boolean",
+			 "name":"finalResultGen",
+			 "description":"Training Result Generation",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"I"		
+			}
+		]	
+	},
+	{
+	"appname":"CF based Similarity", 
+	"appicon":"res/images/recom_cf_corr.png",		
+	"classname":"CFBasedSimilarity",
+	"version": "0.1",
+	"appgroup": "RECOMMENDATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[			
+			{
+			 "type":"columnindex",
+			 "name":"uidIndex", 
+			 "description":"User ID Index",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"iidIndex", 
+			 "description":"Item ID Index",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"ratingIndex",
+			 "description":"Rating Value Index",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},				
+			{
+			 "type":"combo",
+			 "name":"basedType",
+			 "description":"Similarity Base Type",
+			 "required":"N",
+			 "values":[
+				   {"value":"user","option":"USER"},
+				   {"value":"item","option":"ITEM"}
+				], 
+			 "iotype":"I"		 
+			},	
+			{
+			 "type":"text",
+			 "name":"commonCount", 
+			 "description":"Minimum Number Of Common Ratings",
+			 "values":"10",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"algorithmOption",
+			 "description":"Similarity/Correlation Algorithm",
+			 "required":"N",
+			 "values":[
+				   {"value":"pearson","option":"PEARSON COEFFICIENT"},
+				   {"value":"cosine","option":"COSINE COEFFICIENT"},
+				   {"value":"uclidean","option":"UCLIDEAN COEFFICIENT"}
+				], 
+			 "iotype":"I"		 
+			},			
+			{
+			 "type":"text",
+			 "name":"targetID", 
+			 "description":"Similarity Target ID",
+			 "required":"N",
+			 "iotype":"I"		
+			}
+		]	
+	},
+	{
+	"appname":"Content based Similarity", 
+	"appicon":"res/images/recom_content_sim.png",		
+	"classname":"ContentBasedSimilarity",
+	"version": "0.1",
+	"appgroup": "RECOMMENDATION",
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnselect",
+			 "name":"keyIndex",
+			 "description":"Identifier Attribute(Index)",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attrbute(Index)",
+			 "required":"N",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"algorithmOption",
+			 "description":"Similarity/Correlation Algorithm",
+			 "required":"N",
+			 "values":[
+				   {"value":"jaccard","option":"JACCARD COEFFICIENT"},				
+				   {"value":"dice","option":"DICE COEFFICIENT"}
+				   ], 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"sumOption",
+			 "description":"Similarity Sum Option",
+			 "required":"N",
+			 "values":[
+				   {"value":"avg","option":"AVERAGE"},				
+				   {"value":"sum","option":"SUM"},
+				   {"value":"cfsum","option":"CERTAINTY FACTOR"}
+				   ], 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"targetID",
+			 "description":"Similarity Target ID",
+			 "required":"N",
+			 "iotype":"I"		
+			}			
+		]	
+	},
+	{
+	"appname":"User/Item Similarity based Recommendation", 
+	"appicon":"res/images/recom_gen.png",		
+	"classname":"Recommendation",
+	"version": "0.1",
+	"appgroup": "RECOMMENDATION",	
+	"nexus":"org.ankus:ankus-core2-onycom-alpha1:1.1.0",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"uidIndex",
+			 "description":"User ID Index",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"iidIndex",
+			 "description":"Item ID Index",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"ratingIndex",
+			 "description":"Rating Value Index",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"subinput",
+			 "name":"similPath",
+			 "description":"Similarity Path",
+			 "required":"N",			 
+			 "iotype":"I"			 
+			},
+			{
+			 "type":"delimeter",
+			 "name":"similDelimiter",
+			 "description":"Similarity Column Delimeter",
+			 "required":"N",			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"basedType",
+			 "description":"Similarity Base Type",
+			 "required":"N",
+			 "values":[
+				   {"value":"user","option":"USER"},				
+				   {"value":"item","option":"ITEM"}				
+				   ], 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"similThreshold",
+			 "description":"Similarty Threshold",
+			 "required":"N",
+			 "values":"0.7",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"text",
+			 "name":"targetUID",
+			 "description":"Recommend Target User ID",
+			 "required":"N",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"text",
+			 "name":"targetIIDList",
+			 "description":"Recommend Target Item ID List",
+			 "required":"N",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"text",
+			 "name":"recomCnt",
+			 "description":"Top-N Recommendation",
+			 "required":"N",
+			 "values":"10",
+			 "iotype":"I"		
+			}			
+		]	
+	}
+  ]
+}

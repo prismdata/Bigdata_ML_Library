@@ -1,0 +1,121 @@
+트리 기반 범주형 데이터 분류 모델 
+
+수행 방법 모델 생성 :
+hadoop jar ankus-core2-id3-1.1.0.jar ID3 -input [입력 파일 또는 입력 폴더] -output [출력 폴더 경로] -indexList [알고리즘에 사용할 데이터 인덱스] -exceptionIndexList [알고리즘에서 제외할 데이터 인덱스] -classIndex [클래스 레이블 인덱스] -delimiter [속성 구분자] 
+-minLeafData [단말 노드에서 데이터 수] -purity [각 노드에서 클래스 레이블 종류의 수] -finalResultGen [학습데이터 분류 결과 생성 여부] -tempDelete [임시 파일 삭제 여부 {true|false}]
+
+  단말 노드에서 데이터 수: 양의 정수 
+  각 노드에서 클래스 레이블 순도 : 0~1사이의 실수
+  임시 파일 삭제 여부: true로 설정 시 모델 생성 중간 데이터를 모두 삭제함.
+
+수행 방법 모델 테스트 :  
+hadoop jar ankus-core2-id3-1.1.0.jar ID3 -input [입력 파일 또는 입력 폴더] -output [출력 폴더 경로] -modelPath [학습된 모델이 있는 경로명]  -indexList [알고리즘에 사용할 데이터 인덱스] -exceptionIndexList [알고리즘에서 제외할 데이터 인덱스] -classIndex [클래스 레이블 인덱스] -delimiter [속성 구분자] 
+  -finalResultGen [학습데이터 분류 결과 생성 여부] -tempDelete [임시 파일 삭제 여부 {true|false}]
+  
+ 
+수행 예제:모델 생성(학습)
+ankus-core2-id3-1.1.0.jar ID3 -input /data/id3.csv -output /result/id3_model -indexList 0,1,2,3 -classIndex 4 -delimiter , -minLeafData 2 -purity 0.75 -finalResultGen true -tempDelete true
+*입력 예제
+outlook,temperature,humidity,windy,play
+overcast,hot,high,FALSE,yes
+overcast,cool,normal,TRUE,yesbn 
+overcast,mild,high,TRUE,yes
+overcast,hot,normal,FALSE,yes
+rainy,mild,high,FALSE,yes
+rainy,cool,normal,FALSE,yes
+rainy,cool,normal,TRUE,no
+rainy,mild,normal,FALSE,yes
+rainy,mild,high,TRUE,no
+sunny,hot,high,FALSE,no
+sunny,hot,high,TRUE,no
+sunny,mild,high,FALSE,no
+sunny,cool,normal,FALSE,yes
+sunny,mild,normal,TRUE,yes
+
+*출력 예제
+**classifying_result/part-m-00000 : 분류 결과 파일
+outlook,temperature,humidity,windy,play,play
+overcast,hot,high,FALSE,yes,yes
+overcast,cool,normal,TRUE,yes,yes
+overcast,mild,high,TRUE,yes,yes
+overcast,hot,normal,FALSE,yes,yes
+rainy,mild,high,FALSE,yes,yes
+rainy,cool,normal,FALSE,yes,yes
+rainy,cool,normal,TRUE,no,no
+rainy,mild,normal,FALSE,yes,yes
+rainy,mild,high,TRUE,no,no
+sunny,hot,high,FALSE,no,no
+sunny,hot,high,TRUE,no,no
+sunny,mild,high,FALSE,no,no
+sunny,cool,normal,FALSE,yes,yes
+sunny,mild,normal,TRUE,yes,yes
+
+**id3_rule: 규칙 파일
+# [AttributeName-@@Attribute-Value][@@].., Data-Count, Node-Purity, Class-Label, Is-Leaf-Node
+0@@sunny,5,0.6,no,false-cont
+0@@sunny@@2@@high,3,1.0,no,true
+0@@sunny@@2@@normal,2,1.0,yes,true
+0@@outlook,1,1.0,play,true
+0@@rainy,5,0.6,yes,false-cont
+0@@rainy@@3@@TRUE,2,1.0,no,true
+0@@rainy@@3@@FALSE,3,1.0,yes,true
+0@@overcast,4,1.0,yes,true
+
+**validation.txt : 성능 검증 파일
+ # Total Summary
+Total Instances: 15
+Correctly Classified Instances: 15(100.00%)
+Incorrectly Classified Instances: 0(0.00%)
+
+# Confusion Matrix
+(Classified as)	no	play	yes	|	total	
+no	5	0	0	|	#5
+play	0	1	0	|	#1
+yes	0	0	9	|	#9
+total	5	1	9
+
+# Detailed Accuracy
+Class	TP_Rate	FP_Rate	Precision	Recall	F-Measure
+no	1.000	0.000	1.000	1.000	1.000
+play	1.000	0.000	1.000	1.000	1.000
+yes	1.000	0.000	1.000	1.000	1.000
+Weig.Avg.	1.000	0.000	1.000	1.000	1.000
+
+수행 예제:모델 테스트
+hadoop jar ankus-core2-id3-1.1.0.jar ID3 -input /data/id3.csv -output /result/id3_test  -modelPath /result/id3_model/id3_rule  -indexList 0,1,2,3 -classIndex 4 -delimiter , -finalResultGen true -tempDelete true
+**validation.txt : 성능 검증 파일
+# Total Summary
+Total Instances: 15
+Correctly Classified Instances: 15(100.00%)
+Incorrectly Classified Instances: 0(0.00%)
+
+# Confusion Matrix
+(Classified as)	no	play	yes	|	total	
+no	5	0	0	|	#5
+play	0	1	0	|	#1
+yes	0	0	9	|	#9
+total	5	1	9
+
+# Detailed Accuracy
+Class	TP_Rate	FP_Rate	Precision	Recall	F-Measure
+no	1.000	0.000	1.000	1.000	1.000
+play	1.000	0.000	1.000	1.000	1.000
+yes	1.000	0.000	1.000	1.000	1.000
+Weig.Avg.	1.000	0.000	1.000	1.000	1.000
+ 
+ **classifying_result/part-m-00000 : 분류 결과 파일
+outlook,temperature,humidity,windy,play,play
+overcast,hot,high,FALSE,yes,yes
+overcast,cool,normal,TRUE,yes,yes
+overcast,mild,high,TRUE,yes,yes
+overcast,hot,normal,FALSE,yes,yes
+rainy,mild,high,FALSE,yes,yes
+rainy,cool,normal,FALSE,yes,yes
+rainy,cool,normal,TRUE,no,no
+rainy,mild,normal,FALSE,yes,yes
+rainy,mild,high,TRUE,no,no
+sunny,hot,high,FALSE,no,no
+sunny,hot,high,TRUE,no,no
+sunny,mild,high,FALSE,no,no
+sunny,cool,normal,FALSE,yes,yes
+sunny,mild,normal,TRUE,yes,yes

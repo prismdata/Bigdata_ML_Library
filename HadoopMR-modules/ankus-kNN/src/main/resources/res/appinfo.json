@@ -1,0 +1,112 @@
+{
+  "packagename":"org.ankus.mapreduce.algorithms.classification.knn",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+  {
+	"appname":"kNN Classification", 
+	"appicon":"res/images/kNN.png",		
+	"classname":"kNN",
+	"version": "0.1",
+	"appgroup": "CLASSIFICATION",	
+	"nexus":"ankus-core2-kNN-1.1.0.jar",	
+	"params":[	
+			{
+			 "type":"boolean",
+			 "name":"suppliedTest",
+			 "description":"Supplied Test Set",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+			 "iotype":"D"			 
+			},  
+			{
+			 "type":"subinput",
+			 "name":"modelPath",
+			 "description":"Supplied Input Path",
+			 "required":"N",
+			 "filter":"suppliedTest=='true'",
+			 "iotype":"I"			 
+			}, 
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"nominalIndexList",
+			 "description":"Nominal Attributes(Index) List",
+			 "required":"N",
+
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnselect",
+			 "name":"classIndex",
+			 "description":"Class Attribute(Index)",
+			 "required":"Y",			
+			 "iotype":"I"		 
+			},		
+			{
+			 "type":"text",
+			 "name":"k",
+			 "description":"k",
+			 "required":"Y",
+			 "values":"2",
+	
+			 "iotype":"I"		 
+			},	
+			{
+			 "type":"combo",
+			 "name":"distanceOption",
+			 "description":"Distance Option",
+			 "required":"N",
+			 "values":[
+				   {"value":"uclidean","option":"UCLIDEAN"},				
+				   {"value":"manhattan","option":"MANHATTAN"}
+				   ], 
+
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"boolean",
+			 "name":"distanceWeight",
+			 "description":"Distance Weight Adaptation",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+
+			 "iotype":"I"		
+			},
+			{
+			 "type":"boolean",
+			 "name":"isValidation",
+			 "description":"Cross Vaildation Generate",
+			 "required":"Y",
+			 "values":[
+			       {"value":"true","option":"True"},
+				   {"value":"false","option":"False"}
+				],
+
+			 "iotype":"I"		
+			}
+		]	
+	}
+  ]
+}

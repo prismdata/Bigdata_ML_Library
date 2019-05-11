@@ -1,0 +1,55 @@
+아이템간 유사도 모델을 사용한 아이템 추천 
+
+수행 방법:
+hadoop jar ankus-core2-itembasedRecommend-1.1.0.jar Recommendation \
+-input [입력 데이터 경로] \
+-delimiter [사용자, 아이템 컬럼 구분자] \
+-uidIndex [사용자 컬럼 번호] \
+-iidIndex [아이템 컬럼 번호] \
+-ratingIndex [평점 컬럼 인덱스] \
+-similPath [사용자간 유사도 데이터 경로] \
+-basedType [유사도 타입{사용자, 아이템}]  \
+-similDelimiter [유사도 데이터의 컬럼 구분자] \
+-similThreshold [추천 생성시에 사용할 유사 사용자과의 유사도 임계값] \
+-targetUID [추천을 생성하여 제공할 대상 사용자의 ID] \
+-targetIIDList [대상 사용자에게 추천할 대상 아이템의 목록, 아이템이 여러개인 경우 공백 없이 콤마(,)로 구분하여 입력] \
+-tempDelete [다단계 MR의 결과 파일 및 중간 생성물을 삭제 할 수 있으며, 기본 값은 true] \
+-output [출력 파일이 생성될 경로]
+
+수행 예제:
+hadoop jar ankus-itembasedRecommend/target/ankus-core2-itembasedRecommend-1.1.0.jar Recommendation \
+-input /data/user_sim.txt  \
+-output /result/item_recommend \
+-delimiter :: \
+-uidIndex 0 \
+-iidIndex 1 \
+-ratingIndex 2 \
+-similPath /resut/item_sim_result \
+-similDelimiter :: \
+-similThreshold 0.6 \
+-targetUID U9 \
+-recomCnt 20 \
+-tempDelete false 
+
+*출력 예제
+**/resut/item_recommend/recomResult
+2197::5.0::1
+245::5.0::1
+807::5.0::1
+2740::4.667::3
+3817::4.667::9
+2079::4.571::7
+3025::4.556::9
+1117::4.5::4
+1743::4.5::2
+1872::4.5::2
+2627::4.5::8
+2839::4.5::2
+2994::4.5::4
+3344::4.5::8
+754::4.5::2
+632::4.429::7
+283::4.417::12
+3488::4.417::12
+503::4.417::12
+2998::4.4::10

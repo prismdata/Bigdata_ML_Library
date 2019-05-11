@@ -1,0 +1,17 @@
+{
+  "packagename":"org.ankus.mapreduce.algorithms.utils.DocSimilarity.DocSiliarityDriver",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	 "appname":"DOCSIMILITY",  
+	 "appicon":"res/images/icon_docsimilty.png",				 
+	 "classname":"DocumentSimilarity",
+	 "version": "0.1",
+	 "appgroup": "STATISTICS",
+	 "nexus":"ankus-core2-Document-sim-1.1.0.jar",
+	 "inputsamplefile":"resources/doc_similarity",
+	 "outputsamplefile":"resources/doc_similarity_result"
+	}
+  ]
+}

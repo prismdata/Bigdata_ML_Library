@@ -1,0 +1,49 @@
+문서간 유사도를 계산하는 알고리즘
+
+수행 방법:
+
+* 주의 사항:
+각 문서는 입력 데이터 폴더에 개별 파일로 존재해야 하며, 문서는 한줄로 구성되어야함.
+ 
+hadoop jar ankus-core2-Document-sim-1.1.0.jar DocumentSimilarity \
+-input [입력 파일 또는 입력 폴더] \
+-output [출력 데이터 폴더 경로] \
+-delimiter [문서 제목과 본문의 구분자]
+
+수행 예제:
+hadoop jar ankus-core2-Document-sim-1.1.0.jar DocumentSimilarity \
+-input /data/doc_similarity \
+-output /result/docsimiarity \
+-delimiter \t
+
+*입력 예제
+doc_similarity/news_economy.txt 
+Economy South Korea's public sector net lending hit a record high last year, .....
+
+doc_similarity/news_entertailment.txt 
+Entertainment South Korea's major theaters are at loggerheads with the global streaming giant....
+
+doc_similarity/news_lifestyle.txt
+LifeStyle Summer package at Sheraton Seoul D Cube CitySheraton Seoul D Cube City Hotel is offering....
+
+doc_similarity/news_sports.txt
+Sports South Korea will seek North Korea's participation in a continental weightlifting competition....
+ 
+*출력 예제
+ /result/docsimiarity/similarity_result.csv
+ news_economy.txt,news_sports.txt,Similarity, 0.074
+news_economy.txt,news_entertailment.txt,Similarity, 0.069
+news_economy.txt,news_lifestyle.txt,Similarity, 0.027
+
+news_entertailment.txt,news_sports.txt,Similarity, 0.16
+news_entertailment.txt,news_economy.txt,Similarity, 0.069
+news_entertailment.txt,news_lifestyle.txt,Similarity, 0.013
+
+news_lifestyle.txt,news_economy.txt,Similarity, 0.027
+news_lifestyle.txt,news_entertailment.txt,Similarity, 0.013
+news_lifestyle.txt,news_sports.txt,Similarity, 0.007
+
+news_sports.txt,news_entertailment.txt,Similarity, 0.16
+news_sports.txt,news_economy.txt,Similarity, 0.074
+news_sports.txt,news_lifestyle.txt,Similarity, 0.007
+

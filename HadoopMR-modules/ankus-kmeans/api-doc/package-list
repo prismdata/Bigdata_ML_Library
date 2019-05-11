@@ -1,0 +1,7 @@
+org.ankus.mapreduce
+org.ankus.mapreduce.algorithms.clustering.common
+org.ankus.mapreduce.algorithms.clustering.kmeans
+org.ankus.mapreduce.algorithms.preprocessing.normalize
+org.ankus.mapreduce.algorithms.statistics.nominalstats
+org.ankus.mapreduce.algorithms.statistics.numericstats
+org.ankus.util

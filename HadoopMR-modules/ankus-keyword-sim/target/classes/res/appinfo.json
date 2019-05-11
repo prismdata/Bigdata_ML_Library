@@ -1,0 +1,17 @@
+{
+  "packagename":"org.ankus.mapreduce.algorithms.utils.keywordSimilarity.keywordSimilarityDriver",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	 "appname":"Keyword Similarity",  
+	 "appicon":"res/images/icon_keyword.png",				 
+	 "classname":"KeyWordSimilarity",
+	 "version": "0.1",
+	 "appgroup": "STATISTICS",
+	 "nexus":"ankus-core2-keyword-sim-1.1.0.jar",
+	 "inputsamplefile":"resources/doc_similarity",
+	 "outputsamplefile":"resources/doc_similarity_result"	
+	}
+  ]
+}

@@ -1,0 +1,8 @@
+수치/범주형 데이터에 대해 유클리드/멘허튼 거리 측정 방법을 이용하여 가까운 것끼리 묶어주는
+군집 알고리즘입니다.
+
+수행 방법:
+hadoop jar ankus-core2-kmeans-1.1.0.jar KMeans -input 입력 데이터 경로  -output 군집 결과 출력 경로 -delimiter 속성 구분자  -indexList 수치형 속성 목록 -clusterCnt 클러스터 개수  -convergeRate 클러스터 중심의 이동 변화 수렴 값  -maxIteration 군집 반복 횟수 -finalResultGen 클러스터내의 데이터 갯수 출력 여부
+
+kMeans 실행 예제.
+hadoop jar ankus-core2-kmeans-1.1.0.jar KMeans -input /data/iris.csv -output /result/kmeans_csv -delimiter , -indexList 0,1,2,3 -clusterCnt 4 -convergeRate 0 -maxIteration 100 -finalResultGen true

@@ -1,0 +1,37 @@
+{
+  "packagename":"org.ankus.mapreduce",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	"appname":"Numeric Similarity/Correlation", 
+	"appicon":"res/images/simcorr_row_numeric.png",		
+	"classname":"NumericStatistics",
+	"version": "0.1",
+	"appgroup": "CORRELATION",	
+	"nexus":"ankus-core2-numeric-similarity-1.1.0.jar",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"keyIndex",
+			 "description":"Identifier Attribute(Index)",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"algorithmOption",
+			 "description":"Similarity/Correlation Algorithm",
+			 "required":"N",
+			 "values":[
+				   {"value":"cosine","option":"COSINE COEFFICIENT"},
+				   {"value":"pearson","option":"PEARSON COEFFICIENT"},
+				   {"value":"mahattan","option":"HAMMING DISTANCE"},
+				   {"value":"uclidean","option":"UCLIDEAN DISTANCE"}
+				   ], 
+			 "iotype":"I"		 
+			}		
+		]	
+	}
+  ]
+}

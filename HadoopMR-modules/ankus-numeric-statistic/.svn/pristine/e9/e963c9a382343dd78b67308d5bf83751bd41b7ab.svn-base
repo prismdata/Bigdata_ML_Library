@@ -1,0 +1,12 @@
+수치 데이터 통계 분석 모듈
+
+수행 방법:
+hadoop jar ankus-core2-numeric-statistic-1.1.0.jar NumericStatistics -input [입력 파일 또는 입력 폴더]  -output [출력 폴더 경로] -delimiter [구분자] -indexList  [수치형 대상 인덱스 리스트] -tempDelete [임시 파일 삭제 옵션(true, false)
+임시 파일 경로
+[출력 폴더 경로]_2_1_BlockPos
+[출력 폴더 경로]_2_2_BlockPos
+[출력 폴더 경로]_res1
+[출력 폴더 경로]_splitStat
+
+수행 예제:
+hadoop jar ankus-core2-numeric-statistic-1.1.0.jar NumericStatistics -input /data/numeric_statistics.csv -output /result/numeric_statistic -delimiter , -indexList 0,1,2,3 -tempDelete false

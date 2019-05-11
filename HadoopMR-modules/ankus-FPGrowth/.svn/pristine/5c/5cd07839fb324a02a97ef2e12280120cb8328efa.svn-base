@@ -1,0 +1,161 @@
+package org.ankus.mapreduce.algorithms.association.pfpgrowth;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+
+import org.ankus.util.ArgumentsConstants;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.JobConf;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Mapper.Context;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class PfpgrowthConditionalTransaction_Map extends 
+				Mapper<LongWritable , Text, Text, Text>
+{
+	
+	private Logger logger = LoggerFactory.getLogger(PfpgrowthConditionalTransaction_Map.class);
+	
+	private String delimiter = "";
+
+	private HashMap<String, Long> flist= new HashMap<String,Long>();
+	
+	
+	long minSup=0;
+	public void setup(Context context) throws IOException, InterruptedException
+	{
+		double tc=0;
+		double support=0;
+		Configuration conf = context.getConfiguration();
+		tc = Double.parseDouble(conf.get("TRANSACTIONS"));
+		support =  context.getConfiguration().getFloat(ArgumentsConstants.AR_MINSUPP,1) * 100;
+		if(support >= 100)
+		{
+			support = 1;
+		}
+        minSup =  (long)((support / 100) * tc);
+        logger.info("Min support: " + minSup + "(records)");
+        
+        delimiter =  context.getConfiguration().get(ArgumentsConstants.DELIMITER, "\t");
+        
+		try
+		{
+			Path[] cacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
+			for(int pi = 0; pi < cacheFiles.length; pi++)
+			{
+				if(cacheFiles != null && cacheFiles.length > 0)
+				{
+					String line;
+					String[] tokens;
+					try
+					{
+						BufferedReader br = new BufferedReader(new FileReader(cacheFiles[pi].toUri().getPath()));
+						while((line  = br.readLine())!= null)
+						{
+							//logger.info(line);
+							tokens = line.split("\t");
+							if(minSup <= Long.parseLong(tokens[1]))
+								flist.put(tokens[0],  Long.parseLong(tokens[1]));
+						}
+					}catch(Exception e)
+					{
+						logger.info(e.toString());
+					}
+				}
+			}
+		}catch(Exception e)
+		{
+			logger.info(e.toString());
+		}
+	}
+	public String sortByValue(final Map map)
+	{
+        List<String> list = new ArrayList();
+        list.addAll(map.keySet());
+         
+        Collections.sort(list,new Comparator()
+        {
+            public int compare(Object o1,Object o2)
+            {
+                Object v1 = map.get(o1);
+                Object v2 = map.get(o2);
+                return ((Comparable) v1).compareTo(v2);
+            }
+        });
+        Collections.reverse(list); // 주석시 오름차순
+        String strList = new String();
+        for(int li = 0; li <list.size(); li++)
+        {
+        	strList += list.get(li) + ",";
+        }
+        return strList;
+    }
+	public void map(LongWritable key, Text input_transaction, Context context) throws IOException, InterruptedException
+	{		
+				Map<String, Long> tmp_input_trans = new HashMap<String,Long>();
+		 		String tmpSortedTransaction= new String();
+		 		
+		 		String items[] = input_transaction.toString().split(delimiter);
+				for(String item: items)
+				{
+					if(flist.containsKey(item) == true)
+					{
+						tmp_input_trans.put(item,  flist.get(item));	
+					}
+				}
+				if(tmp_input_trans.size() > 0)
+				{
+					tmpSortedTransaction  = sortByValue(tmp_input_trans);				
+					tmpSortedTransaction = tmpSortedTransaction.substring(0, tmpSortedTransaction.length()-1); //콤마제거 
+					Text output_key = new Text();
+					Text output_value = new Text();					
+					String arrayitems[] = tmpSortedTransaction.split(",");
+					
+					int items_size = arrayitems.length-1;
+					
+					//CONFIGURING CONDITIONAL TRANSACTION
+					logger.info("Conditional Transation");
+					for(int idx = items_size; idx > 0; idx--)//From end To start
+					{
+						List<String> ListPrefix = new ArrayList<String>();
+						String suffix = arrayitems[idx];
+						logger.info("#key:[" +suffix+"]");
+						
+						for(int i = 0; i < idx; i++)
+						{
+							String ai = arrayitems[i];
+							ListPrefix.add(ai);
+						}
+						
+						output_key.set(suffix);
+						String prefix = new String();
+						for(String field: ListPrefix)
+						{
+							prefix += field + ",";
+						}
+						prefix = prefix.substring(0, prefix.length()-1);
+						output_value.set(prefix);
+						logger.info("##value:[" +prefix+"]");
+						//OUTPUT CONDITIONAL TRANSACTION
+						context.write(output_key,output_value);
+					}
+				}
+	}
+}

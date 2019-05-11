@@ -1,0 +1,55 @@
+{
+  "packagename":"org.ankus.mapreduce",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	"appname":"FuzzyKMeans", 
+	"appicon":"res/images/ml_cluster_fuzzyKMeans.png",		
+	"classname":"FuzzyKMeans",
+	"version": "0.1",
+	"appgroup": "CLUSTERING",	
+	"nexus":"ankus-core2-fuzzy-k-means-1.1.0.jar",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"text",
+			 "name":"maxIteration",
+			 "description":"Max Iteration",
+			 "required":"Y",
+			 "values":"100",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"k",
+			 "description":"Numbers of Cluster",
+			 "required":"Y",
+			 "values":"2",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"p",
+			 "description":"Weight of Cluster",
+			 "required":"Y",
+			 "values":"0.1",
+			 "iotype":"I"		 
+			}
+		]	
+	}
+  ]
+}

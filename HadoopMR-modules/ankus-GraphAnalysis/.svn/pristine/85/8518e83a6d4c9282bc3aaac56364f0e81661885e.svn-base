@@ -1,0 +1,357 @@
+package org.ankus.mapreduce.algorithms.utils.GraphAnalysis;
+
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.ankus.util.ArgumentsConstants;
+import org.ankus.util.ConfigurationVariable;
+import org.ankus.util.Constants;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
+import org.apache.hadoop.util.hash.Hash;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class GraphAnalysisDriver extends Configured implements Tool {
+	private Logger logger = LoggerFactory.getLogger(GraphAnalysisDriver.class);
+	long endTime = 0;
+   	long lTime  = 0;
+   	long startTime = 0 ; 
+	public int run(String[] args) throws Exception
+	{
+		Configuration conf = this.getConf();
+		if(!ConfigurationVariable.setFromArguments(args, conf))
+		{
+			logger.error("MR Job Setting Failed..");
+			logger.info("Error: MR Job Setting Failed..: Configuration Failed");
+		     return 1;
+		}
+		startTime = System.nanoTime();
+		FileSystem fs = FileSystem.get(conf);
+		Path path = new Path(conf.get(ArgumentsConstants.INPUT_PATH));
+		FileStatus[] status = fs.listStatus(path);
+		int file_count = status.length;
+	
+		Job jobGraphAnalysis = new Job(this.getConf());
+		
+		FileInputFormat.addInputPaths(jobGraphAnalysis, conf.get(ArgumentsConstants.INPUT_PATH));
+		FileSystem.get(conf).delete(new Path(conf.get(ArgumentsConstants.OUTPUT_PATH)), true);//FOR LOCAL TEST
+		FileOutputFormat.setOutputPath(jobGraphAnalysis, new Path(conf.get(ArgumentsConstants.OUTPUT_PATH)));
+		
+		jobGraphAnalysis.setJarByClass(GraphAnalysisDriver.class);
+		
+		jobGraphAnalysis.setMapperClass(GraphLoad_Mapper.class);
+		jobGraphAnalysis.setReducerClass(GraphAnalysis_Reducer.class);
+		jobGraphAnalysis.setOutputKeyClass(Text.class);
+		jobGraphAnalysis.setOutputValueClass(Text.class);  
+        if(!jobGraphAnalysis.waitForCompletion(true))
+        {
+            logger.info("Error: Get Terms for TF-IDF(Rutine) is not Completeion");
+            return 1;
+        }
+        
+        
+        //File Renameing..
+        //Get Influence
+        mFileIntegration(fs, conf.get(ArgumentsConstants.OUTPUT_PATH), "part-r");
+        String influ_ext_source_path = conf.get(ArgumentsConstants.OUTPUT_PATH);
+        Extension_Fluence(fs,influ_ext_source_path,"influence_basic.txt", "part-r");
+        
+//        Structural_Simality(fs,influ_ext_source_path,"influence_basic.txt", "part-r");
+        endTime = System.nanoTime();
+		lTime = endTime - startTime;
+		
+		System.out.println("Graph Analys Processing Time(ms) : " + lTime/1000000.0 + "(ms)");
+		System.out.println("Graph Analys Processing Time(sec):" + (lTime/1000000.0)/1000 + "(sec)");
+		return 0;
+	}
+	@SuppressWarnings("unchecked")
+	private void Structural_Simality(FileSystem fs , String inputPath, String basic_name,  String filePrefix)
+	{
+
+		try
+    	{
+			//Load 
+			String tmp = "";
+	    	FileStatus[] status = fs.listStatus(new Path(inputPath + "/"+ basic_name));
+	    	
+	    	FSDataOutputStream fout = fs.create(new Path(inputPath + "/structural_similarity.txt"), true);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fout, Constants.UTF8));
+            
+            HashMap<String, List> Neighbors = new HashMap<String, List>();
+            
+	        for(int i=0; i<status.length; i++)
+	        {
+	            Path fp = status[i].getPath();
+	            
+	            //if(fp.getName().indexOf(filePrefix)<0) continue;
+	
+	            FSDataInputStream fin = fs.open(status[i].getPath());
+	            BufferedReader br = new BufferedReader(new InputStreamReader(fin, Constants.UTF8));	            
+	            
+	            String readStr, tokens[];
+	            int value;
+	            while((readStr=br.readLine())!=null)
+	            {
+	              String[] base_info = readStr.split("\t");
+	              String startNode = base_info[0].trim();
+	              String link = base_info[1].trim();
+	              String[] endNodesList = link.split("@@");
+	              
+	              tmp = endNodesList[1];
+	              tmp = tmp.substring(1, tmp.length()-1);
+	              
+	              String[] aNode = tmp.split(",");
+	              List<String> nodes = new ArrayList<String>();
+	              for(int aNi = 0 ; aNi < aNode.length; aNi++)
+	              {
+	            	  nodes.add(aNode[aNi].trim());
+	              }
+	              
+	              Neighbors.put(base_info[0].trim(), nodes);
+	            }
+	            br.close();
+	            fin.close();
+	        }
+	        
+	        HashMap<Double, String> Simimarity_Map = new HashMap<Double, String>();
+	        
+	        Iterator<String> startNode = Neighbors.keySet().iterator();
+	        while(startNode.hasNext())//Search Full Start Node.
+	        {
+	            String snode = startNode.next();
+				List<String> s_neighbor = Neighbors.get(snode);
+				
+				Iterator<String> endNode = Neighbors.keySet().iterator();   	
+	            while(endNode.hasNext())
+	            {
+	            	String enode = endNode.next();
+	            	//Skip same node
+	            	if(!snode.equals(enode))
+	            	{
+	            		//Check link
+	            		if(s_neighbor.contains(enode) == true && Neighbors.get(enode).size() > 1)
+	            		{
+							List<String> e_neighbor = Neighbors.get(enode);
+				            List<String> common_set = this.intersection(s_neighbor, e_neighbor);
+				            System.out.println(snode + "-" + enode);
+				            System.out.println(s_neighbor +"Inter" + e_neighbor);
+				            System.out.println(common_set);
+				            double a  = (double) common_set.size();
+				            double size_s = (double) s_neighbor.size();
+				            double size_e = (double) e_neighbor.size();
+				            double b = Math.sqrt(size_s * size_e);
+				            double str_similarity = a / b;
+				            Simimarity_Map.put(str_similarity, snode +"\t" + enode);
+	            		}
+	            	}
+	            }
+	        }
+	        TreeMap<Double, String> tm = new TreeMap<Double, String>(Simimarity_Map);
+	        
+	        //Iterator<Double> iteratorKey = tm.keySet( ).iterator( );   //키값 오름차순 정렬(기본)
+	        Iterator<Double> iteratorKey = tm.descendingKeySet().iterator(); //키값 내림차순 정렬
+	        while(iteratorKey.hasNext()){
+	         double key = iteratorKey.next();
+	         System.out.println(key+","+tm.get(key));
+	         bw.write(key + "\t" + tm.get(key) + "\n");
+	        }
+	        bw.close();
+	        fout.close();
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println(e.toString());
+    	}
+	
+	}
+
+	public <T> List<T> intersection(List<T> list1, List<T> list2)
+	{     
+		List<T> list = new ArrayList<T>();      
+		for (T t : list1) 
+		{
+			if (list2.contains(t)) 
+			{
+				list.add(t);         
+			}
+		}
+		return list;
+	}
+	
+	private void Extension_Fluence(FileSystem fs , String inputPath, String basic_name,  String filePrefix)
+	{
+		try
+    	{
+			//Load 
+			String tmp = "";
+	    	FileStatus[] status = fs.listStatus(new Path(inputPath + "/"+ basic_name));
+	    	
+	    	FSDataOutputStream fout = fs.create(new Path(inputPath + "/influence_ext.txt"), true);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fout, Constants.UTF8));
+            
+            HashMap<String, List> LoadLink = new HashMap<String, List>();
+            HashMap<String, List> LoadLink_TMP = new HashMap<String, List>();
+	        for(int i=0; i<status.length; i++)
+	        {
+	            Path fp = status[i].getPath();
+	            
+	            //if(fp.getName().indexOf(filePrefix)<0) continue;
+	
+	            FSDataInputStream fin = fs.open(status[i].getPath());
+	            BufferedReader br = new BufferedReader(new InputStreamReader(fin, Constants.UTF8));	            
+	            
+	            String readStr, tokens[];
+	            int value;
+	            while((readStr=br.readLine())!=null)
+	            {
+	              String[] base_info = readStr.split("\t");
+	              String startNode = base_info[0].trim();
+	              String link = base_info[1].trim();
+	              String[] endNodesList = link.split("@@");
+	              
+	              tmp = endNodesList[1];
+	              tmp = tmp.substring(1, tmp.length()-1);
+	              
+	              String[] aNode = tmp.split(",");
+	              List<String> nodes = new ArrayList<String>();
+	              for(int aNi = 0 ; aNi < aNode.length; aNi++)
+	              {
+	            	  nodes.add(aNode[aNi].trim());
+	              }
+	              
+	              LoadLink.put(base_info[0].trim(), nodes);
+	              LoadLink_TMP.put(base_info[0].trim(), nodes);
+	            }
+	            br.close();
+	            fin.close();
+	        }
+	        
+	        Iterator<String> startNode = LoadLink.keySet().iterator();
+	        
+	        System.out.println(LoadLink);
+	        while(startNode.hasNext())//Search Full Start Node.
+	        {
+	            String node = startNode.next();
+	            List<String> Source_Node = LoadLink.get(node); //Source_Node
+	            System.out.println(node +" Before : " + Source_Node);
+	            for(int i = 0; i < Source_Node.size(); i++)
+	            {
+	            	String eNode  = Source_Node.get(i);
+	            	if(LoadLink_TMP.containsKey(eNode) == true)
+	            	{
+		            	List<String> targetLink = LoadLink_TMP.get(eNode);//Target Node
+		            	System.out.println(eNode + " Merge : " + LoadLink_TMP.get(eNode));
+		            	for (String x : targetLink)
+		            	{
+		            		if (!Source_Node.contains(x))
+							{
+		            			Source_Node.add(x);
+		            			//System.out.println("Append:"+x);
+							}
+		            	}
+	            	}
+	            }
+	            System.out.println("After : " + Source_Node);
+	        }
+	        
+	        
+	        TreeMap<String,List> tm = new TreeMap<String,List>(LoadLink);
+	        
+	        Iterator<String> iteratorKey = tm.keySet( ).iterator( );   //키값 오름차순 정렬(기본)
+	        //Iterator<String> iteratorKey = tm.descendingKeySet().iterator(); //키값 내림차순 정렬
+	      
+	        while(iteratorKey.hasNext())//Search Full Start Node.
+	        {
+	        	String node = iteratorKey.next();
+	            List<String> Source_Node = LoadLink.get(node); //Source_Node
+	            
+	            bw.write(node +"\t" + Source_Node.size()+"@@"+ Source_Node+"\n");
+	            
+	            System.out.println(node +"/"  + Source_Node);
+	        }
+	        bw.close();
+	        fout.close();
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println(e.toString());
+    	}
+	}
+	private void mFileIntegration(FileSystem fs , String inputPath, String filePrefix)
+    {
+    	try
+    	{
+	    	FileStatus[] status = fs.listStatus(new Path(inputPath));
+	    	FSDataOutputStream fout = fs.create(new Path(inputPath + "/influence_basic.txt"), true);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fout, Constants.UTF8));
+            HashMap<Double, String> influence_score = new HashMap<Double, String>();
+            
+	        for(int i=0; i<status.length; i++)
+	        {
+	            Path fp = status[i].getPath();
+	            
+	            if(fp.getName().indexOf(filePrefix)<0) continue;
+	
+	            FSDataInputStream fin = fs.open(status[i].getPath());
+	            BufferedReader br = new BufferedReader(new InputStreamReader(fin, Constants.UTF8));	            
+	            
+	            String readStr, tokens[];
+	            int value;
+	            while((readStr=br.readLine())!=null)
+	            {
+	            	/*
+	            	String[] tmp  = readStr.split("\t");
+	            	String[] score = tmp[1].split("@@");
+	            	
+	            	influence_score.put(Double.parseDouble(score[0]), tmp[0] +"\t" + score[1]);
+	            	*/
+	            	bw.write(readStr);
+					bw.write("\r\n");
+	            }
+	            
+	            
+	            br.close();
+	            fin.close();
+	            fs.delete(fp);
+	        }
+	        bw.close();
+	        fout.close();
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println(e.toString());
+    	}
+    }
+	public static void main(String args[]) throws Exception 
+	{
+		int res = ToolRunner.run(new GraphAnalysisDriver(), args);
+        System.exit(res);
+	}
+
+
+}

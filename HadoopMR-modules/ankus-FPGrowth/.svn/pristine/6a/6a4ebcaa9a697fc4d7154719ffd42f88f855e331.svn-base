@@ -1,0 +1,17 @@
+package org.ankus.mapreduce.algorithms.association.pfpgrowth;
+
+import java.util.HashMap;
+import java.util.List;
+
+public class Rule_Info
+{
+	HashMap<String, HashMap<String, Double>> rule_map = new HashMap<String, HashMap<String, Double>>();
+	HashMap<List<String>,  Integer > pattern_map = new HashMap<List<String>, Integer>();
+	
+	public  Rule_Info(HashMap<String, HashMap<String, Double>> rule_map, 
+							HashMap<List<String>,  Integer > pattern_map)
+	{
+		this.rule_map = rule_map;
+		this.pattern_map = pattern_map;
+	}
+}

@@ -1,0 +1,38 @@
+{
+  "packagename":"org.ankus.mapreduce.algorithms.statistics.certaintyfactorsum",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	"appname":"Certainty Factor based Sum", 
+	"appicon":"res/images/stats_cfsum.png",	
+	"classname":"CertaintyFactorSUM",
+	"version": "0.1",
+	"appgroup": "STATISTICS",	
+	"nexus":"ankus-core2-certaintyfactorsum-1.1.0.jar",	
+	"params":[		
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Target Attributes(Index) List",
+			 "required":"Y",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exception Attributes(Index) List",
+			 "required":"N",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"text",
+			 "name":"cfsumMax",
+			 "description":"Max Value For Certainty Factor",
+			 "required":"N",			
+			 "iotype":"I"		 
+			}			
+		]
+	}
+  ]
+}

@@ -1,0 +1,111 @@
+통계 기반 데이터 군집 모델 
+
+수행 방법 모델 생성 :hadoop jar ankus-core2-em-1.1.0.jar \
+EM \
+-input [입력 파일 또는 입력 폴더] \
+-output [출력 데이터 폴더 경로] \
+-delimiter [컬럼 구분자] \
+-indexList [수치형 대상 인덱스 리스트] \
+-clusterCnt [클러스터 갯수: 양의 정수] \
+-convergeRate [확률 분포 변화 하한선: 0에서 1사이 실수] \
+-maxIteration [군집 반복 횟수: 양의 정수] \
+-finalResultGen [성능 검사 파일 생성 유무{true|false}]
+
+*결과 파일
+purity : 각 클러스가 가진 데이터의 갯수를 계산
+clustering_result/part-m-00000 : 군집 결과 파일
+cluster_center_[군집 횟수]/part-r-00000 : 군집 모델
+
+수행 방법 모델 테스트:hadoop jar ankus-core2-em-1.1.0.jar \
+EM \
+-input [입력 파일 또는 입력 폴더] \
+-output [출력 데이터 폴더 경로] \
+-delimiter [컬럼 구분자] \
+-modelPath [모델 생성에서 사용한 출력 폴더 경로]
+ 
+수행 예제:모델 생성(학습)
+hadoop jar ankus-core2-em-1.1.0.jar EM -input /data/em.csv -output /result/em_model -delimiter , -indexList 0,1,2,3 -clusterCnt 3 -convergeRate 1 -maxIteration 100 -finalResultGen true
+*입력 예제
+........
+5.1,2.5,3,1.1,versicolor
+5.7,2.8,4.1,1.3,versicolor
+6.3,3.3,6,2.5,virginica
+5.8,2.7,5.1,1.9,virginica
+7.1,3,5.9,2.1,virginica
+6.3,2.9,5.6,1.8,virginica
+6.5,3,5.8,2.2,virginica
+7.6,3,6.6,2.1,virginica
+4.9,2.5,4.5,1.7,virginica
+7.3,2.9,6.3,1.8,virginica
+6.7,2.5,5.8,1.8,virginica
+7.2,3.6,6.1,2.5,virginica
+6.5,3.2,5.1,2,virginica
+6.4,2.7,5.3,1.9,virginica
+6.8,3,5.5,2.1,virginica
+.........
+*출력 예제
+**purity
+# Clustering Result - Purity
+# Cluster Number, Assigned Data Count, Assigned Data Ratio
+# Attr-4,frequency,ratio
+0,59,0.393
+1,43,0.287
+2,48,0.32
+**clustering_result/part-m-00000
+......
+5,3.3,1.4,.2,0,1.0
+7,3.2,4.7,1.4,2,0.995
+6.4,3.2,4.5,1.5,2,0.834
+6.9,3.1,4.9,1.5,2,0.983
+5.5,2.3,4,1.3,1,0.917
+6.5,2.8,4.6,1.5,1,0.849
+5.7,2.8,4.5,1.3,1,0.968
+6.3,3.3,4.7,1.6,2,0.944
+4.9,2.4,3.3,1,0,1.0
+6.6,2.9,4.6,1.3,1,0.702
+5.2,2.7,3.9,1.4,0,0.694
+5,2,3.5,1,0,1.0
+5.9,3,4.2,1.5,1,0.809
+6,2.2,4,1,1,0.982
+6.1,2.9,4.7,1.4,1,0.908
+.....
+**cluster_center_1/part-r-00000
+0,0,5.165@@NU@@0.194,1,3.137@@NU@@0.312,2,2.197@@NU@@1.37,3,0.528@@NU@@0.209
+1,0,6.762@@NU@@0.23,1,3.014@@NU@@0.087,2,5.506@@NU@@0.365,3,1.946@@NU@@0.118
+2,0,5.921@@NU@@0.064,1,2.938@@NU@@0.029,2,4.566@@NU@@0.142,3,1.555@@NU@@0.079
+
+수행 예제:모델 테스트
+hadoop jar ankus-core2-em-1.1.0.jar EM -input /data/em.csv -output /result/iris_em_test -delimiter , -modelPath /result/em_model
+*출력 예제
+**purity
+# Clustering Result - Purity
+# Cluster Number, Assigned Data Count, Assigned Data Ratio
+# Attr-4,frequency,ratio
+0,62,0.413
+1,46,0.307
+2,42,0.28
+**clustering_result/part-m-00000
+....
+5.5,2.4,3.8,1.1,0,0.971
+5.5,2.4,3.7,1,0,0.994
+5.8,2.7,3.9,1.2,2,0.967
+6,2.7,5.1,1.6,2,0.915
+5.4,3,4.5,1.5,2,0.993
+6,3.4,4.5,1.6,2,0.891
+6.7,3.1,4.7,1.5,1,0.836
+6.3,2.3,4.4,1.3,2,0.489
+5.6,3,4.1,1.3,2,0.989
+5.5,2.5,4,1.3,2,0.662
+5.5,2.6,4.4,1.2,2,0.936
+6.1,3,4.6,1.4,2,0.991
+5.8,2.6,4,1.2,2,0.956
+5,2.3,3.3,1,0,1.0
+5.6,2.7,4.2,1.3,2,0.987
+5.7,3,4.2,1.2,2,0.992
+5.7,2.9,4.2,1.3,2,0.996
+6.2,2.9,4.3,1.3,2,0.994
+5.1,2.5,3,1.1,0,1.0
+5.7,2.8,4.1,1.3,2,0.993
+6.3,3.3,6,2.5,1,1.0
+5.8,2.7,5.1,1.9,2,0.861
+....

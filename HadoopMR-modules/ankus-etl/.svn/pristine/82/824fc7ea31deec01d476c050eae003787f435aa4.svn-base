@@ -1,0 +1,97 @@
+{
+  "packagename":"org.ankus.mapreduce.algorithms.preprocessing.etl",
+  "author":"onycom",
+  "create":"2016-04-14",
+  "applist":[
+	{
+	"appname":"ETL", 
+	"appicon":"res/images/ETL.png",	
+	"classname":"ETL",
+	"version": "0.1",
+	"appgroup": "PREPROCESSING",	
+	"nexus":"ankus-core2-etl-1.1.0.jar",	
+	"params":[		
+			{
+			 "type":"combo",
+			 "name":"etlMethod",
+			 "description":"Method",
+			 "required":"N",
+			 "values":[
+			       {"value":"ColumnExtractor","option":"COLUMN EXTRACTOR"},
+				   {"value":"FilterInclude","option":"FILTER INCLUDE"},
+				   {"value":"FilterExclude","option":"FILTER EXCLUDE"},
+				   {"value":"Replace","option":"REPLACE"},
+				   {"value":"NumericNorm","option":"CATEGORIZATION"},
+				   {"value":"Sort","option":"SORT"}
+				   ], 
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"columnindex",
+			 "name":"indexList",
+			 "description":"Include Attributes(Index) List",
+			 "required":"Y",
+			 "filter":"etlMethod=='ColumnExtractor'",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"columnindex",
+			 "name":"exceptionIndexList",
+			 "description":"Exclude Attributes(Index) List",
+			 "required":"N",
+			 "filter":"etlMethod=='ColumnExtractor'",
+			 "iotype":"I"		
+			},
+			{
+			 "type":"boolean", 
+			 "name":"ruleType",
+			 "description":"Rule Type",
+			 "required":"Y",
+			 "values":[
+			       {"value":"file","option":"File"},
+				   {"value":"text","option":"Text"}
+				],
+			 "filter":"etlMethod=='FilterInclude' || etlMethod=='FilterExclude' || etlMethod=='Replace' || etlMethod=='NumericNorm'",		
+			 "iotype":"D"		
+			},
+			{
+			 "type":"subinput",
+			 "name":"filterRulePath",
+			 "description":"Rule(File)",
+			 "required":"N",
+			 "filter":"(etlMethod=='FilterInclude' || etlMethod=='FilterExclude' || etlMethod=='Replace' || etlMethod=='NumericNorm') && ruleType == 'file'",	
+			 "iotype":"I"			 
+			},
+			{
+			 "type":"text",
+			 "name":"filterRule",
+			 "description":"Rule(Text)",
+			 "required":"N",	
+			 "filter":"(etlMethod=='FilterInclude' || etlMethod=='FilterExclude' || etlMethod=='Replace' || etlMethod=='NumericNorm') && ruleType == 'text'",
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"combo",
+			 "name":"sort",
+			 "description":"Sort Criterion",
+			 "required":"N",
+			 "values":[
+			       {"value":"asc","option":"ASCENDING"},
+				   {"value":"desc","option":"DESCENDING"}				  
+				   ], 
+			 "filter":"etlMethod=='Sort'",		   
+			 "iotype":"I"		 
+			},
+			{
+			 "type":"text",
+			 "name":"SortTarget",
+			 "description":"Target Index",
+			 "required":"N",
+			 "values":"2",
+			 "filter":"etlMethod=='Sort'",
+			 "iotype":"I"		 
+			}			
+		]
+	}
+  ]
+}
