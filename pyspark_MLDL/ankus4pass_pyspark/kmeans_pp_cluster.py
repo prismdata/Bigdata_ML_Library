@@ -1,10 +1,6 @@
 #-*- coding: utf-8 -*-
 
 import os
-
-import findspark
-findspark.init()
-
 from pyspark import SparkContext
 import numpy as np
 import pickle
