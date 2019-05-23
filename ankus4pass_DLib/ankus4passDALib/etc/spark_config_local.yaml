@@ -1,0 +1,11 @@
+spark_env:
+  /Users/prismdata/spark-2.3.2-bin-hadoop2.6
+
+SPARK_LOCAL_IP:
+  127.0.0.1
+
+PYSPARK_DRIVER_PYTHON:
+  jupyter
+
+PYSPARK_DRIVER_PYTHON_OPTS:
+  notebook

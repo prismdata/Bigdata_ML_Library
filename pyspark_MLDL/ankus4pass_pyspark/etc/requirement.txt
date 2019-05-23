@@ -1,7 +1,0 @@
-findspark  
-numpy      
-pyspark    
-pyyaml
-pandas
-scikit-learn
-matplotlib
