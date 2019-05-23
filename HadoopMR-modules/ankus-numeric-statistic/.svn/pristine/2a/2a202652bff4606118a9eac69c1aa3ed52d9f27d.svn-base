@@ -1,5 +1,0 @@
-수치 데이터 통계 분석 모듈
-수행 명령
-hadoop jar ankus-core2-numeric-statistic-1.1.0.jar NumericStatistics -input 입력 파일  -output 출력 경로 -delimiter 구분자 -indexList  수치 데이터 인덱스 -tempDelete 임시 파일 삭제 옵션(true, false)
-예제 
-hadoop jar ankus-core2-numeric-statistic-1.1.0.jar NumericStatistics -input /data/iris.csv -output /result/numric_statistic -delimiter , -indexList 0,1,2,3

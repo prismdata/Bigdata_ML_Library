@@ -1,8 +1,0 @@
-/**
- * <font face="verdana">
- * 추천 결과를 생성하는 패키지
- * </font>
- * @author Moonie Song
- * @date : 2013.07.02
- */
-package org.ankus.mapreduce.algorithms.recommendation.recommender.commons;

@@ -1,6 +1,0 @@
-범주 데이터 통계 분석 모듈
-수행 명령
-hadoop jar ankus-core2-nominal-statistic-1.1.0.jar NominalStatistics -input 입력 파일  -output 출력 경로 -delimiter 구분자 -indexList 범주 데이터 인덱스(1개만 수용) -tempDelete 임시 파일 삭제 옵션(true, false)
-예제 
-hadoop jar ankus-core2-nominal-statistic-1.1.0.jar NominalStatistics -input /data/iris.csv -output /result/nomainal_statistic -delimiter , -indexList 4 -tempDelete true
-

@@ -1,8 +1,0 @@
-log4j.rootLogger = debug, stdout, dailyfile
-
-# console
-log4j.appender.stdout = org.apache.log4j.ConsoleAppender
-log4j.appender.stdout.Threshold = debug
-log4j.appender.stdout.layout = org.apache.log4j.PatternLayout 
-log4j.appender.stdout.layout.ConversionPattern= %m%n
-log4j.appender.logfile.File=/Users/hadoop/Documents/ankus-core2-onycom/ankus-core2-modules/ankus-core2-keyword-sim-root/ankus-keyword-sim/target
