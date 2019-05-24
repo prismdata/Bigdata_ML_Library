@@ -10,9 +10,9 @@ import csv
 
 import findspark
 
-
+import ankus4passDALib.unsupervised.kmeans_pp_cluster as kmeans_pp_cluster
 if __name__ == "__main__":
-    bath_path = os.path.dirname(os.path.abspath(__file__))
+    bath_path = os.path.dirname(os.path.abspath('__file__'))
     print bath_path
     yaml_file = open(bath_path + '/../etc/spark_config_local.yaml', 'r')
 
@@ -30,9 +30,9 @@ if __name__ == "__main__":
     K = 10
     numbers_of_parallel_kmeans = 20
     converge_dist = 0.03
-    bath_path = os.path.dirname(os.path.abspath(__file__))
+    bath_path = os.path.dirname(os.path.abspath('__file__'))
     input_path = bath_path + '/../DataSet/iris.csv'
-    output_path = 'iris.pkl'
+    output_path = '../model/iris.pkl'
     if len(sys.argv) == 4:
         K = int(sys.argv[1])
         numbers_of_parallel_kmeans = int(sys.argv[2])  # '병렬로 실핼할 kmeans갯수'

@@ -26,6 +26,7 @@ if __name__ == "__main__":
     os.environ["SPARK_LOCAL_IP"] = SPARK_LOCAL_IP
     os.environ["PYSPARK_DRIVER_PYTHON"] = PYSPARK_DRIVER_PYTHON
     os.environ["PYSPARK_DRIVER_PYTHON_OPTS"] = PYSPARK_DRIVER_PYTHON_OPTS
+    os.environ["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = 'YES'  # for mac fork error
     findspark.init()
     K = 10
     numbers_of_parallel_kmeans = 20
