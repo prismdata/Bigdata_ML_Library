@@ -1,0 +1,77 @@
+거리 기반 데이터 분류 모델
+
+수행 방법:
+hadoop jar ankus-core2-kNN-1.1.0.jar \
+kNN \
+-input [입력 파일 또는 입력 폴더] \
+-output [출력 폴더 경로] \
+-delimiter [컬럼 구분자] \
+-modelPath [모델 데이터 경로] \
+-indexList [분류에 사용할 수치형 데이터 컬럼 인덱스 리스트] \
+-nominalIndexList [분류에 사용할 범주형 데이터 컬럼 인덱스 리스트] \ 
+-classIndex [분류에 사용할 레이블 컬럼 인덱스 리스트] \
+-k [인접한 인스턴스의 갯수] \
+-distanceOption [인스턴스간 거리 측정 방법{manhattan|uclidean}] \ 
+-distanceWeight [인스턴스간 거리의 가중치{true|false}]  \
+-isValidation [모델 검증 결과 출력 여부{true|false}]
+
+-모델 데이터 경로 생략 시 입력 데이터가 모델로 사용됨. 
+-입력 데이터의 속성이 수치형으로만 존재할 경우 nominalIndexList를 생략함.
+-입력 데이터의 속성이 범주형으로만 존재할 경우 indexList를 생략함.
+-모델 데이터 사용 여부: true로 설정시 
+-모델 데이터 경로 사용함.
+-인접한 인스턴스의 갯수 : 양의 정수
+-인스턴스간 거리 측정 방법: manhattan, uclidean 지원
+-인스턴스간 거리의 가중치:false의 경우 k개 클래스의 단순 투표로 결정.
+-모델 검증 결과 출력 여부: true 로 설정 시 /result/kNN/validation가 생성됨.
+-분류 결과 출력 경로 : 출력 폴도 경로: /classifying_result/part-r-00000가 자동 생성.
+
+수행 예제:
+hadoop jar ankus-core2-kNN-1.1.0.jar kNN -input /data/kNN_input.csv -output /result/kNN -delimiter , -modelPath /data/kNN_model.csv -indexList 0,1,2,3 -classIndex 4 -k 3 -distanceOption uclidean -distanceWeight false  -isValidation true
+*입력 예제
+........
+5.1,2.5,3,1.1,versicolor
+5.7,2.8,4.1,1.3,versicolor
+6.3,3.3,6,2.5,virginica
+5.8,2.7,5.1,1.9,virginica
+7.1,3,5.9,2.1,virginica
+6.3,2.9,5.6,1.8,virginica
+6.5,3,5.8,2.2,virginica
+7.6,3,6.6,2.1,virginica
+4.9,2.5,4.5,1.7,virginica
+7.3,2.9,6.3,1.8,virginica
+6.7,2.5,5.8,1.8,virginica
+7.2,3.6,6.1,2.5,virginica
+6.5,3.2,5.1,2,virginica
+6.4,2.7,5.3,1.9,virginica
+6.8,3,5.5,2.1,virginica
+.........
+*출력 예제
+**/result/kNN/validation 
+# Total Summary
+Total Instances: 10
+Correctly Classified Instances: 10(100.00%)
+Incorrectly Classified Instances: 0(0.00%)
+
+# Confusion Matrix
+(Classified as)	setosa	|	total	
+setosa	10	|	#10
+total	10
+
+# Detailed Accuracy
+Class	TP_Rate	FP_Rate	Precision	Recall	F-Measure
+setosa	1.000	0.000	1.000	1.000	1.000
+Weig.Avg.	1.000	0.000	1.000	1.000	1.000
+
+**/result/kNN/classifying_result/part-r-00000
+5.1,3.5,1.4,0.2,setosa,setosa
+4.9,3,1.4,0.2,setosa,setosa
+4.7,3.2,1.3,0.2,setosa,setosa
+4.6,3.1,1.5,0.2,setosa,setosa
+5,3.6,1.4,0.2,setosa,setosa
+5.4,3.9,1.7,0.4,setosa,setosa
+4.6,3.4,1.4,0.3,setosa,setosa
+5,3.4,1.5,0.2,setosa,setosa
+4.4,2.9,1.4,0.2,setosa,setosa
+4.9,3.1,1.5,0.1,setosa,setosa
+
