@@ -1,3 +1,4 @@
+# 트리 기반 분류 알고리즘
 hadoop jar ankus-core2-c4.5-1.1.0.jar \
 C45 \
 -input [입력 파일 또는 입력 폴더] \
