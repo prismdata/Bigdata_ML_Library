@@ -1,4 +1,4 @@
-# 트리 기반 분류 알고리즘
+" 트리 기반 분류 알고리즘
 hadoop jar ankus-core2-c4.5-1.1.0.jar \
 C45 \
 -input [입력 파일 또는 입력 폴더] \
@@ -29,7 +29,7 @@ C45 \
 
 *출력 예제:
 **/result/c45_model/C45_rule.txt: 트리 모델을 텍스트로 표현한 규칙 파일
-# [AttributeName-@@Attribute-Value][@@].., Data-Count, Node-Purity, Class-Label, Is-Leaf-Node
+ [AttributeName-@@Attribute-Value][@@].., Data-Count, Node-Purity, Class-Label, Is-Leaf-Node
 2@@<&&1.9,50,0.0,"Setosa",true
 2@@>&&1.9,100,0.0,"Virginica",false-cont
 2@@>&&1.9@@3@@<&&1.7,54,0.0,"Virginica",false-cont
@@ -75,12 +75,12 @@ Incorrectly Classified Instances: 2(1.33%)
 
 " Confusion Matrix"
 (Classified as)	"Setosa"	"Versicolor"	"Virginica"	|	total	
-"Setosa"	50	0	0	|	#50
-"Versicolor"	0	48	2	|	#50
-"Virginica"	0	0	50	|	#50
+"Setosa"	50	0	0	|	"50
+"Versicolor"	0	48	2	|	"50
+"Virginica"	0	0	50	|	"50
 total	50	48	52
 
-# Detailed Accuracy
+ Detailed Accuracy
 Class	TP_Rate	FP_Rate	Precision	Recall	F-Measure
 "Setosa"	1.000	0.000	1.000	1.000	1.000
 "Versicolor"	0.960	0.000	1.000	0.960	0.980
@@ -124,7 +124,7 @@ C45 \
 ...
 *모델 예제:
 **/result/c45_model/C45_rule.txt
-# [AttributeName-@@Attribute-Value][@@].., Data-Count, Node-Purity, Class-Label, Is-Leaf-Node
+" [AttributeName-@@Attribute-Value][@@].., Data-Count, Node-Purity, Class-Label, Is-Leaf-Node
 2@@<&&1.9,50,0.0,"Setosa",true
 2@@>&&1.9,100,0.0,"Virginica",false-cont
 2@@>&&1.9@@3@@<&&1.7,54,0.0,"Virginica",false-cont
@@ -168,19 +168,19 @@ C45 \
 ....
 *검증 예제:
 **/result/c45_test/validation.txt
-# Total Summary
+ Total Summary
 Total Instances: 150
 Correctly Classified Instances: 148(98.67%)
 Incorrectly Classified Instances: 2(1.33%)
 
-# Confusion Matrix
+ Confusion Matrix
 (Classified as)	"Setosa"	"Versicolor"	"Virginica"	|	total	
-"Setosa"	50	0	0	|	#50
-"Versicolor"	0	48	2	|	#50
-"Virginica"	0	0	50	|	#50
+"Setosa"	50	0	0	|	"50
+"Versicolor"	0	48	2	|	"50
+"Virginica"	0	0	50	|	"50
 total	50	48	52
 
-# Detailed Accuracy
+" Detailed Accuracy
 Class	TP_Rate	FP_Rate	Precision	Recall	F-Measure
 "Setosa"	1.000	0.000	1.000	1.000	1.000
 "Versicolor"	0.960	0.000	1.000	0.960	0.980
@@ -670,9 +670,9 @@ KMeans \
 .........
 *출력 예제
 **purity.csv : 군집의 데이터 분포
-# Clustering Result - Purity
-# Cluster Number,Assigned Data Count,Assigned Data Ratio
-# Attr-4,frequency,ratio
+" Clustering Result - Purity
+" Cluster Number,Assigned Data Count,Assigned Data Ratio
+" Attr-4,frequency,ratio
 0,27,0.18
 1,23,0.153
 2,61,0.407
@@ -745,17 +745,17 @@ hadoop jar ankus-core2-kNN-1.1.0.jar kNN -input /data/kNN_input.csv -output /res
 .........
 *출력 예제
 **/result/kNN/validation 
-# Total Summary
+" Total Summary
 Total Instances: 10
 Correctly Classified Instances: 10(100.00%)
 Incorrectly Classified Instances: 0(0.00%)
 
-# Confusion Matrix
+" Confusion Matrix
 (Classified as)	setosa	|	total	
-setosa	10	|	#10
+setosa	10	|	"10
 total	10
 
-# Detailed Accuracy
+" Detailed Accuracy
 Class	TP_Rate	FP_Rate	Precision	Recall	F-Measure
 setosa	1.000	0.000	1.000	1.000	1.000
 Weig.Avg.	1.000	0.000	1.000	1.000	1.000
@@ -827,7 +827,7 @@ NaiveBayes  \
 .........
 *출력 예제
 **/result/naive_bayes_model/bayes_rules  : 모델 파일
-# AttrIndex(or Class),Type,Value(Category or Avg/StdDev),ValueCount,ClassType,ClassCount
+" AttrIndex(or Class),Type,Value(Category or Avg/StdDev),ValueCount,ClassType,ClassCount
 0,numeric,5.006,0.3489469873777273,50,setosa,50
 1,numeric,3.4179999999999997,0.3771949098278028,50,setosa,50
 2,numeric,1.464,0.1717672844286691,50,setosa,50
@@ -856,19 +856,19 @@ class,versicolor,50,150
 6.3,2.3,4.4,1.3,versicolor,versicolor
 ................
 **/result/naive_bayes_model/validation : 성능 검증 결과 파일
-# Total Summary
+" Total Summary
 Total Instances: 150
 Correctly Classified Instances: 144(96.00%)
 Incorrectly Classified Instances: 6(4.00%)
 
-# Confusion Matrix
+" Confusion Matrix
 (Classified as)	setosa	versicolor	virginica	|	total	
-setosa	50	0	0	|	#50
-versicolor	0	47	3	|	#50
-virginica	0	3	47	|	#50
+setosa	50	0	0	|	"50
+versicolor	0	47	3	|	"50
+virginica	0	3	47	|	"50
 total	50	50	50
 
-# Detailed Accuracy
+" Detailed Accuracy
 Class	TP_Rate	FP_Rate	Precision	Recall	F-Measure
 setosa	1.000	0.000	1.000	1.000	1.000
 versicolor	0.940	0.030	0.940	0.940	0.940
@@ -886,19 +886,19 @@ NaiveBayes  \
 -delimiter ,
 
 **/result/naive_bayes_test/validation : 성능 검증 결과 파일
-# Total Summary
+" Total Summary
 Total Instances: 150
 Correctly Classified Instances: 144(96.00%)
 Incorrectly Classified Instances: 6(4.00%)
 
-# Confusion Matrix
+" Confusion Matrix
 (Classified as)	setosa	versicolor	virginica	|	total	
-setosa	50	0	0	|	#50
-versicolor	0	47	3	|	#50
-virginica	0	3	47	|	#50
+setosa	50	0	0	|	"50
+versicolor	0	47	3	|	"50
+virginica	0	3	47	|	"50
 total	50	50	50
 
-# Detailed Accuracy
+" Detailed Accuracy
 Class	TP_Rate	FP_Rate	Precision	Recall	F-Measure
 setosa	1.000	0.000	1.000	1.000	1.000
 versicolor	0.940	0.030	0.940	0.940	0.940
