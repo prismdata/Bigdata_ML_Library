@@ -68,12 +68,12 @@ C45 \
 6.4,3.2,4.5,1.5,"Versicolor","Versicolor"
 ........
 **/result/c45_model/validation.txt : 알고리즘 및 Machine Learning 모델의 성능을 평가 결과가 출력됨.
-# Total Summary
+" Total Summary "
 Total Instances: 150
 Correctly Classified Instances: 148(98.67%)
 Incorrectly Classified Instances: 2(1.33%)
 
-# Confusion Matrix
+" Confusion Matrix"
 (Classified as)	"Setosa"	"Versicolor"	"Virginica"	|	total	
 "Setosa"	50	0	0	|	#50
 "Versicolor"	0	48	2	|	#50
