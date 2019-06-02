@@ -49,9 +49,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler.plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-        				<target>1.7</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    	<source>1.8</source>
+        				<target>1.8</target>
+                    	<encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
 
@@ -65,7 +65,6 @@
                             <mainClass>org.ankus.mapreduce.AnkusDriver</mainClass>
                         </manifest>
                     </archive>
-                    
                 </configuration>
             </plugin>
           
@@ -78,9 +77,7 @@
 						<descriptorRef>jar-with-dependencies</descriptorRef>  
 					</descriptorRefs>  
 					
-                    <configuration>
-						<outputDirectory>/tmp/</outputDirectory>
-					</configuration>
+                    
 				</configuration>  
 			</plugin>  
       
@@ -240,6 +237,19 @@
     </build>
     
     <dependencies>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.9.9</version>
+		</dependency>
+    
+    
+		<dependency>
+		    <groupId>com.fasterxml.jackson.dataformat</groupId>
+		    <artifactId>jackson-dataformat-yaml</artifactId>
+		    <version>2.9.8</version>
+		</dependency>
+
     	<dependency>
 		  <groupId>org.apache.any23</groupId>
 		  <artifactId>apache-any23-encoding</artifactId>
@@ -951,7 +961,7 @@
         <url></url>
     </issueManagement>
     <organization>
-        <name>ONYCOM</name>
+        <name>openankus</name>
         <url>http://www.onycom.com</url>
     </organization>
     <licenses>

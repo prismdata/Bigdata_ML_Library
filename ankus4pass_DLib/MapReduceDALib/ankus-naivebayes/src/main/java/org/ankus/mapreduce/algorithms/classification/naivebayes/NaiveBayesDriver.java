@@ -58,7 +58,7 @@ import java.util.Iterator;
  *
  * @version 0.1
  * @date : 2015.05.12
- * @author Moonie Song
+ * @author Moonie Song, HongJoong.Shin
  */
 public class NaiveBayesDriver extends Configured implements Tool {
 
