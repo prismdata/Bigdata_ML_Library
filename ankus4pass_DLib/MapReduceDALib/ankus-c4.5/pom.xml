@@ -240,6 +240,18 @@
     
     <dependencies>
     	<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.9.9</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.dataformat</groupId>
+		    <artifactId>jackson-dataformat-yaml</artifactId>
+		    <version>2.9.8</version>
+		</dependency>
+		
+    	<dependency>
 		  <groupId>org.apache.any23</groupId>
 		  <artifactId>apache-any23-encoding</artifactId>
 		  <version>1.1</version>
@@ -950,8 +962,8 @@
         <url></url>
     </issueManagement>
     <organization>
-        <name>ONYCOM</name>
-        <url>http://www.onycom.com</url>
+        <name>ankus4pass</name>
+        <url>http://www.openankus.org/</url>
     </organization>
     <licenses>
         <license>
@@ -973,14 +985,14 @@
             <email>mooniesong@gmail.com</email>
         </developer>
         <developer>
-            <id>develo</id>
-            <name>SuHyun Jeon</name>
+            <id>developer</id>
+            <name>HongJoongShin</name>
             <roles>
                 <role>developer</role>
                 <role>Committer</role>
             </roles>
-            <url>https://www.facebook.com/womendevel</url>
-            <email>suhyunjun@gmail.com</email>
+            <url>https://prismdata.tistory.com</url>
+            <email>theprismdata@gmail.com</email>
         </developer>
     </developers>
 </project>    

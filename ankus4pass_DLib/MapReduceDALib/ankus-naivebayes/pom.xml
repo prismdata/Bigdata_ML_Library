@@ -961,8 +961,8 @@
         <url></url>
     </issueManagement>
     <organization>
-        <name>openankus</name>
-        <url>http://www.onycom.com</url>
+        <url>http://www.openankus.org/</url>
+        <name>ankus4pass</name>
     </organization>
     <licenses>
         <license>
@@ -984,14 +984,14 @@
             <email>mooniesong@gmail.com</email>
         </developer>
         <developer>
-            <id>develo</id>
-            <name>SuHyun Jeon</name>
+            <id>developer</id>
+            <name>HongJoongShin</name>
             <roles>
                 <role>developer</role>
                 <role>Committer</role>
             </roles>
-            <url>https://www.facebook.com/womendevel</url>
-            <email>suhyunjun@gmail.com</email>
+            <url>https://prismdata.tistory.com</url>
+            <email>theprismdata@gmail.com</email>
         </developer>
     </developers>
 </project>

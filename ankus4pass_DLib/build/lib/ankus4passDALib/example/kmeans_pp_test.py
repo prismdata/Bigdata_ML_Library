@@ -13,7 +13,7 @@ import findspark
 if __name__ == "__main__":
     bath_path = os.path.dirname(os.path.abspath(__file__))
     print bath_path
-    yaml_file = open(bath_path + '/etc/spark_config_local.yaml', 'r')
+    yaml_file = open(bath_path + '/../etc/spark_config_local.yaml', 'r')
 
     spark_yaml = yaml.load(yaml_file)
     install_path = spark_yaml["spark_env"]
@@ -25,10 +25,11 @@ if __name__ == "__main__":
     os.environ["SPARK_LOCAL_IP"] = SPARK_LOCAL_IP
     os.environ["PYSPARK_DRIVER_PYTHON"] = PYSPARK_DRIVER_PYTHON
     os.environ["PYSPARK_DRIVER_PYTHON_OPTS"] = PYSPARK_DRIVER_PYTHON_OPTS
+    os.environ["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = 'YES'  # for mac fork error
     findspark.init()
     bath_path = os.path.dirname(os.path.abspath(__file__))
-    model_path = '../iris.pkl'
-    input_path = bath_path + '/DataSet/iris.csv'
+    model_path = '../model/iris.pkl'
+    input_path = bath_path + '/../DataSet/iris.csv'
     if len(sys.argv) == 2:
         model_path = sys.argv[1]
         input_path = sys.argv[2]

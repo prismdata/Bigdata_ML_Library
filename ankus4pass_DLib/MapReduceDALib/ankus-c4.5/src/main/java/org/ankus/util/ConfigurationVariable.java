@@ -18,6 +18,7 @@
 package org.ankus.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +28,9 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 /**
  * ConfigurationVariable
@@ -174,14 +178,14 @@ public class ConfigurationVariable {
 	{
 		String argName = "";
 		String argValue = "";
-//		 conf.set("fs.default.name",  "hdfs://localhost:9000");
+		String yamlPath = "host_config.yaml";
+			
 		
-//		conf.set("hadoop.tmp.dir",  "/Users/hadoop/Documents/hadoop-2.6.0/tmp");		
-//		conf.set("mapreduce.cluster.temp.dir",  "/Users/hadoop/Documents/hadoop-2.6.0/tmp/mapred/temp");		
-//		conf.set("mapreduce.cluster.local.dir",  "/Users/hadoop/Documents/hadoop-2.6.0/tmp/mapred/local");		
-//		conf.set("mapreduce.jobtracker.system.dir",  "/Users/hadoop/Documents/hadoop-2.6.0/tmp/mapred/system");		
-//		conf.set("mapreduce.jobtracker.staging.root.dir",  "/Users/hadoop/Documents/hadoop-2.6.0/tmp/mapred/staging");
+		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+		File config = new File(yamlPath);
+		HadoopHostConfig hostConfig = mapper.readValue(config, HadoopHostConfig.class);
 		
+		conf.set("fs.default.name",  hostConfig.getFs_default_name());
 		for (int i=0; i<args.length; ++i) 
         {
 			argName = args[i];
