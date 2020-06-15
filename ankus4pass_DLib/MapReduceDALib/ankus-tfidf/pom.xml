@@ -37,7 +37,7 @@
         <slf4j.log4j12.version>1.6.4</slf4j.log4j12.version>
         <commons.lang.version>2.5</commons.lang.version>
         <commons.logging.version>1.1.1</commons.logging.version>
-        <commons.collections.version>3.2.1</commons.collections.version>
+        <commons.collections.version>3.2.2</commons.collections.version>
         <commons.lang.version>2.5</commons.lang.version>
   </properties>
   
@@ -343,7 +343,7 @@
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
+			<version>3.2.2</version>
 		</dependency>
 		
 		<dependency>
